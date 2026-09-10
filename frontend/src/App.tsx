@@ -40,8 +40,11 @@ export default function App() {
 
   if (sessionLoading) {
     return (
-      <div className="min-h-full flex items-center justify-center bg-[#F8FAFC]">
-        <div className="text-[13px] text-[#6B7280]">Loading…</div>
+      <div
+        className="min-h-full flex items-center justify-center"
+        style={{ background: 'var(--ao-bg)' }}
+      >
+        <div className="text-[13px]" style={{ color: 'var(--ao-text-muted)' }}>Loading…</div>
       </div>
     )
   }

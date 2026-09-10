@@ -2,6 +2,85 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 
+/* ───────────────────────────────────────────
+   Theme tokens — light (default)
+   ─────────────────────────────────────────── */
+:root {
+  --ao-bg:            #ffffff;
+  --ao-bg-subtle:     #f8fafc;
+  --ao-surface:       #ffffff;
+  --ao-surface-hover: #f1f5f9;
+  --ao-border:        #e2e8f0;
+  --ao-border-subtle: #f1f5f9;
+  --ao-text:          #0f172a;
+  --ao-text-secondary:#475569;
+  --ao-text-muted:    #94a3b8;
+  --ao-primary:       #0ea5e9;
+  --ao-primary-hover: #0284c7;
+  --ao-primary-subtle:#e0f2fe;
+  --ao-secondary:     #8b5cf6;
+  --ao-secondary-subtle:#ede9fe;
+  --ao-success:       #10b981;
+  --ao-success-subtle:#d1fae5;
+  --ao-error:         #ef4444;
+  --ao-error-subtle:  #fee2e2;
+  --ao-warning:       #f59e0b;
+  --ao-warning-subtle:#fef3c7;
+  --ao-glow:          rgba(14, 165, 233, 0.15);
+  --ao-glow-strong:   rgba(14, 165, 233, 0.3);
+  --ao-card-shadow:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --ao-card-shadow-lg:0 4px 12px rgba(0,0,0,0.08);
+  --ao-terminal-bg:   #1e293b;
+  --ao-terminal-text: #e2e8f0;
+  --ao-terminal-border:#334155;
+  --ao-hero-gradient: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #ede9fe 100%);
+  --ao-nav-bg:        rgba(255,255,255,0.8);
+  --ao-nav-border:    rgba(226,232,240,0.8);
+  --ao-packet-color:  #0ea5e9;
+  --ao-line-color:    #cbd5e1;
+}
+
+/* ───────────────────────────────────────────
+   Theme tokens — dark
+   ─────────────────────────────────────────── */
+.dark {
+  --ao-bg:            #0a0a0f;
+  --ao-bg-subtle:     #0f1117;
+  --ao-surface:       #151520;
+  --ao-surface-hover: #1c1c2e;
+  --ao-border:        #1e1e32;
+  --ao-border-subtle: #16162a;
+  --ao-text:          #e8eaed;
+  --ao-text-secondary:#9ca3b4;
+  --ao-text-muted:    #5a6175;
+  --ao-primary:       #22d3ee;
+  --ao-primary-hover: #06b6d4;
+  --ao-primary-subtle:rgba(34,211,238,0.1);
+  --ao-secondary:     #a78bfa;
+  --ao-secondary-subtle:rgba(167,139,250,0.1);
+  --ao-success:       #34d399;
+  --ao-success-subtle:rgba(52,211,153,0.1);
+  --ao-error:         #f87171;
+  --ao-error-subtle:  rgba(248,113,113,0.1);
+  --ao-warning:       #fbbf24;
+  --ao-warning-subtle:rgba(251,191,36,0.1);
+  --ao-glow:          rgba(34,211,238,0.12);
+  --ao-glow-strong:   rgba(34,211,238,0.25);
+  --ao-card-shadow:   0 1px 3px rgba(0,0,0,0.3);
+  --ao-card-shadow-lg:0 4px 20px rgba(0,0,0,0.4);
+  --ao-terminal-bg:   #0c0c14;
+  --ao-terminal-text: #c4cad6;
+  --ao-terminal-border:#1e1e32;
+  --ao-hero-gradient: linear-gradient(135deg, #0a0a0f 0%, #0d1520 50%, #100d1e 100%);
+  --ao-nav-bg:        rgba(10,10,15,0.85);
+  --ao-nav-border:    rgba(30,30,50,0.8);
+  --ao-packet-color:  #22d3ee;
+  --ao-line-color:    #2a2a40;
+}
+
+/* ───────────────────────────────────────────
+   Base styles
+   ─────────────────────────────────────────── */
 html,
 body,
 #root {
@@ -9,18 +88,23 @@ body,
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  color: #20242b;
-  background: #fff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ao-text);
+  background: var(--ao-bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 code,
 pre,
 .mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
+/* ───────────────────────────────────────────
+   Scrollbar
+   ─────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -29,9 +113,112 @@ pre,
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d9e0;
+  background: var(--ao-border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
+  background: var(--ao-text-muted);
+}
+
+/* ───────────────────────────────────────────
+   Keyframe animations
+   ─────────────────────────────────────────── */
+@keyframes ao-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes ao-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--ao-glow); }
+  50% { box-shadow: 0 0 12px 4px var(--ao-glow-strong); }
+}
+
+@keyframes ao-status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes ao-packet-move {
+  0% { offset-distance: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes ao-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes ao-counter-tick {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes ao-fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ao-grid-move {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(20px); }
+}
+
+/* ───────────────────────────────────────────
+   Utility classes for landing page
+   ─────────────────────────────────────────── */
+.ao-cursor {
+  animation: ao-cursor-blink 1s step-end infinite;
+}
+
+.ao-pulse {
+  animation: ao-pulse-glow 2s ease-in-out infinite;
+}
+
+.ao-status-pulse {
+  animation: ao-status-pulse 1.5s ease-in-out infinite;
+}
+
+.ao-float {
+  animation: ao-float 3s ease-in-out infinite;
+}
+
+.ao-fade-in {
+  animation: ao-fade-in-up 0.6s ease-out both;
+}
+
+/* Hero background grid */
+.ao-grid-bg {
+  background-image:
+    linear-gradient(var(--ao-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ao-border-subtle) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.dark .ao-grid-bg {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+}
+
+/* ───────────────────────────────────────────
+   Reduced motion
+   ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .ao-cursor,
+  .ao-pulse,
+  .ao-status-pulse,
+  .ao-float {
+    animation: none !important;
+  }
 }
