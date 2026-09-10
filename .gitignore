@@ -11,3 +11,5 @@
 # Logs
 logs
 *.log
+.vercel
+.env*

@@ -15,7 +15,7 @@ import axios, { AxiosError, type AxiosInstance } from 'axios'
 
 import type { WireApiError } from './wire'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+const BASE_URL = import.meta.env.PROD ? (import.meta.env.VITE_API_URL || '') : (import.meta.env.VITE_API_URL || 'http://localhost:3000')
 
 /** Read at request time, not module load, so a sign-in takes effect immediately. */
 let currentOwner: string | null = null
