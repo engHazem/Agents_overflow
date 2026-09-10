@@ -17,13 +17,13 @@ import { signedOut } from '../store/slices/authSlice'
 import { useCurrentUser, useLogout } from '../hooks/queries/useAuth'
 
 const LOGO = () => (
-  <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-[#D1D9E0]">
-    <div className="w-7 h-7 rounded-[6px] bg-[#2563EB] flex items-center justify-center flex-shrink-0">
+  <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-[var(--c-border)]">
+    <div className="w-7 h-7 rounded-[6px] bg-[var(--c-accent)] flex items-center justify-center flex-shrink-0">
       <Bot size={15} className="text-white" />
     </div>
     <div className="leading-none">
-      <div className="text-[13px] font-700 text-[#20242B] tracking-tight">Agents Overflow</div>
-      <div className="text-[10px] text-[#6B7280] mt-0.5">AI Knowledge Base</div>
+      <div className="text-[13px] font-700 text-[var(--c-text)] tracking-tight">Agents Overflow</div>
+      <div className="text-[10px] text-[var(--c-text-secondary)] mt-0.5">AI Knowledge Base</div>
     </div>
   </div>
 )
@@ -44,15 +44,15 @@ function NavItem({ icon, label, page, currentPage, onNavigate, badge }: NavItemP
       onClick={() => onNavigate(page)}
       className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-[6px] text-[13px] transition-colors cursor-pointer ${
         active
-          ? 'bg-[#2563EB] text-white font-500'
-          : 'text-[#374151] hover:bg-[#E2E8F0] font-400'
+          ? 'bg-[var(--c-accent)] text-white font-500'
+          : 'text-[var(--c-text-strong)] hover:bg-[var(--c-surface-hover)] font-400'
       }`}
     >
-      <span className={active ? 'text-white' : 'text-[#6B7280]'}>{icon}</span>
+      <span className={active ? 'text-white' : 'text-[var(--c-text-secondary)]'}>{icon}</span>
       <span className="flex-1 text-left">{label}</span>
       {badge && (
         <span
-          className={`text-[10px] font-600 px-1.5 py-0.5 rounded-full ${active ? 'bg-white/20 text-white' : 'bg-[#2563EB] text-white'}`}
+          className={`text-[10px] font-600 px-1.5 py-0.5 rounded-full ${active ? 'bg-white/20 text-white' : 'bg-[var(--c-accent)] text-white'}`}
         >
           {badge}
         </span>
@@ -63,7 +63,7 @@ function NavItem({ icon, label, page, currentPage, onNavigate, badge }: NavItemP
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="px-3 pt-4 pb-1 text-[10px] font-600 text-[#9CA3AF] uppercase tracking-wider">
+    <div className="px-3 pt-4 pb-1 text-[10px] font-600 text-[var(--c-text-muted)] uppercase tracking-wider">
       {children}
     </div>
   )
@@ -103,8 +103,8 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
 
   return (
     <aside
-      className="w-[240px] flex-shrink-0 flex flex-col border-r border-[#D1D9E0] h-full"
-      style={{ background: '#EEF2F7' }}
+      className="w-[240px] flex-shrink-0 flex flex-col border-r border-[var(--c-border)] h-full"
+      style={{ background: 'var(--c-surface-chrome)' }}
     >
       <LOGO />
 
@@ -122,18 +122,18 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         <NavItem icon={<Plug size={15} />} label="Connect Agent" page="setup" currentPage={currentPage} onNavigate={onNavigate} />
       </nav>
 
-      <div className="border-t border-[#D1D9E0] p-3">
-        <div className="flex items-center gap-2.5 p-2 rounded-[6px] hover:bg-[#E2E8F0] cursor-pointer group">
+      <div className="border-t border-[var(--c-border)] p-3">
+        <div className="flex items-center gap-2.5 p-2 rounded-[6px] hover:bg-[var(--c-surface-hover)] cursor-pointer group">
           {avatarUrl ? (
             <img src={avatarUrl} alt="" className="w-7 h-7 rounded-full flex-shrink-0 object-cover" />
           ) : (
-            <div className="w-7 h-7 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-[var(--c-accent)] flex items-center justify-center flex-shrink-0">
               <span className="text-[10px] font-700 text-white uppercase">{initials}</span>
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <div className="text-[12px] font-600 text-[#20242B] truncate">{displayName}</div>
-            <div className="text-[10px] text-[#6B7280]">
+            <div className="text-[12px] font-600 text-[var(--c-text)] truncate">{displayName}</div>
+            <div className="text-[10px] text-[var(--c-text-secondary)]">
               {/*
                 Says how you are identified, because it changes what the app can
                 do: a provider session is a real account, a handle is just a
@@ -142,12 +142,12 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
               {isOAuth ? 'Signed in' : 'Local handle only'}
             </div>
           </div>
-          <ChevronRight size={12} className="text-[#9CA3AF] opacity-0 group-hover:opacity-100" />
+          <ChevronRight size={12} className="text-[var(--c-text-muted)] opacity-0 group-hover:opacity-100" />
         </div>
         <button
           onClick={signOut}
           disabled={logoutMutation.isPending}
-          className="w-full mt-1 flex items-center gap-2 px-2 py-1.5 rounded-[6px] text-[12px] text-[#6B7280] hover:bg-[#E2E8F0] hover:text-[#374151] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mt-1 flex items-center gap-2 px-2 py-1.5 rounded-[6px] text-[12px] text-[var(--c-text-secondary)] hover:bg-[var(--c-surface-hover)] hover:text-[var(--c-text-strong)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LogOut size={13} />
           {logoutMutation.isPending ? 'Signing out…' : 'Sign out'}

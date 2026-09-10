@@ -279,6 +279,32 @@ export declare const reportResponse: z.ZodObject<{
     environmentsToVerified: z.ZodNumber;
 }, z.core.$strip>;
 export type ReportResponse = z.infer<typeof reportResponse>;
+/**
+ * Who published a problem.
+ *
+ * Nullable on the item rather than always present: `authorAccountId` is
+ * `ON DELETE SET NULL`, so a problem outlives the account that published it.
+ * A null here means "we no longer know", which is a different claim from the
+ * "[removed]" placeholder a deleted comment author gets — a problem with no
+ * byline should show no byline, not a tombstone.
+ *
+ * `handle` is the account, `agentName` the agent that did the publishing. Both
+ * are shown because they answer different questions: the handle is who is
+ * accountable for it, the agent name is what produced it. `agentName` is null
+ * for anything published before agent identities were recorded, and for
+ * anything a human posted directly.
+ */
+export declare const problemAuthor: z.ZodObject<{
+    handle: z.ZodString;
+    displayName: z.ZodNullable<z.ZodString>;
+    avatarUrl: z.ZodNullable<z.ZodString>;
+    kind: z.ZodEnum<{
+        human: "human";
+        agent: "agent";
+    }>;
+    agentName: z.ZodNullable<z.ZodString>;
+}, z.core.$strip>;
+export type ProblemAuthor = z.infer<typeof problemAuthor>;
 export declare const problemListItem: z.ZodObject<{
     id: z.ZodString;
     title: z.ZodString;
@@ -294,6 +320,16 @@ export declare const problemListItem: z.ZodObject<{
     }>;
     totalReports: z.ZodNumber;
     createdAt: z.ZodString;
+    author: z.ZodNullable<z.ZodObject<{
+        handle: z.ZodString;
+        displayName: z.ZodNullable<z.ZodString>;
+        avatarUrl: z.ZodNullable<z.ZodString>;
+        kind: z.ZodEnum<{
+            human: "human";
+            agent: "agent";
+        }>;
+        agentName: z.ZodNullable<z.ZodString>;
+    }, z.core.$strip>>;
 }, z.core.$strip>;
 export type ProblemListItem = z.infer<typeof problemListItem>;
 export declare const problemListResponse: z.ZodObject<{
@@ -312,6 +348,16 @@ export declare const problemListResponse: z.ZodObject<{
         }>;
         totalReports: z.ZodNumber;
         createdAt: z.ZodString;
+        author: z.ZodNullable<z.ZodObject<{
+            handle: z.ZodString;
+            displayName: z.ZodNullable<z.ZodString>;
+            avatarUrl: z.ZodNullable<z.ZodString>;
+            kind: z.ZodEnum<{
+                human: "human";
+                agent: "agent";
+            }>;
+            agentName: z.ZodNullable<z.ZodString>;
+        }, z.core.$strip>>;
     }, z.core.$strip>>;
     total: z.ZodNumber;
     limit: z.ZodNumber;
@@ -333,6 +379,16 @@ export declare const problemDetail: z.ZodObject<{
     }>;
     totalReports: z.ZodNumber;
     createdAt: z.ZodString;
+    author: z.ZodNullable<z.ZodObject<{
+        handle: z.ZodString;
+        displayName: z.ZodNullable<z.ZodString>;
+        avatarUrl: z.ZodNullable<z.ZodString>;
+        kind: z.ZodEnum<{
+            human: "human";
+            agent: "agent";
+        }>;
+        agentName: z.ZodNullable<z.ZodString>;
+    }, z.core.$strip>>;
     normalizedError: z.ZodString;
     signature: z.ZodNullable<z.ZodString>;
     solutions: z.ZodArray<z.ZodObject<{

@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 
+/* Tailwind v4 binds `dark:` to prefers-color-scheme by default. The theme here
+   is an explicit choice written as a class, so rebind it — otherwise someone
+   who picks light inside a dark OS gets a mix of both. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ───────────────────────────────────────────
    Theme tokens — light (default)
    ─────────────────────────────────────────── */
@@ -38,6 +43,60 @@
   --ao-nav-border:    rgba(226,232,240,0.8);
   --ao-packet-color:  #0ea5e9;
   --ao-line-color:    #cbd5e1;
+
+  /* ── App shell (signed-in) ──
+     One token per colour the app actually uses. The light values are the
+     literal hexes the shell shipped with, so moving to tokens changed nothing
+     that renders; the dark block below is the only new palette.
+     Kept separate from the --ao-* landing tokens because the two surfaces
+     disagree on their accent — the shell is blue, the landing page cyan — and
+     collapsing them would silently restyle one of them. */
+  --c-surface:         #ffffff;
+  --c-surface-raised:  #f8fafc;
+  --c-surface-sunken:  #f1f5f9;
+  --c-surface-chrome:  #eef2f7;
+  --c-surface-hover:   #e2e8f0;
+
+  --c-border:          #d1d9e0;
+  --c-border-soft:     #e6e8ec;
+  --c-border-neutral:  #e5e7eb;
+  --c-border-strong:   #d1d5db;
+
+  --c-text:            #20242b;
+  --c-text-strong:     #374151;
+  --c-text-secondary:  #6b7280;
+  --c-text-muted:      #9ca3af;
+  --c-text-faint:      #94a3b8;
+
+  /* Code slabs. Dark in both themes, which is why they are their own tokens
+     rather than --c-text used as a fill: that pairing inverts, and inverting a
+     code block puts a white slab in the middle of a dark page. */
+  --c-code-bg:         #20242b;
+  --c-code-text:       #e6e8ec;
+
+  --c-accent:          #2563eb;
+  --c-accent-strong:   #1d4ed8;
+  --c-accent-subtle:   #eff6ff;
+  --c-accent-border:   #bfdbfe;
+
+  --c-success:         #16a34a;
+  --c-success-strong:  #15803d;
+  --c-success-subtle:  #f0fdf4;
+  --c-success-border:  #bbf7d0;
+  /* Text laid over a --c-success fill. Unlike the accent, which is a saturated
+     blue in both themes, the success colour inverts — deep green on light,
+     mint on dark — so a fixed white would disappear in one of them. */
+  --c-on-success:      #ffffff;
+
+  --c-error:           #ef4444;
+  --c-error-strong:    #b91c1c;
+  --c-error-subtle:    #fef2f2;
+  --c-error-border:    #fecaca;
+
+  --c-warning:         #eab308;
+  --c-warning-strong:  #b45309;
+  --c-warning-subtle:  #fff7ed;
+  --c-warning-border:  #fed7aa;
 }
 
 /* ───────────────────────────────────────────
@@ -76,6 +135,53 @@
   --ao-nav-border:    rgba(30,30,50,0.8);
   --ao-packet-color:  #22d3ee;
   --ao-line-color:    #2a2a40;
+
+  /* ── App shell (signed-in) ──
+     Surfaces are near-neutral and faintly blue so the accent still reads as an
+     accent. The subtle fills are translucent rather than a fixed dark tint, so
+     a badge on a raised card does not band against the card behind it. */
+  --c-surface:         #12141a;
+  --c-surface-raised:  #171a21;
+  --c-surface-sunken:  #1b1f27;
+  --c-surface-chrome:  #0f1116;
+  --c-surface-hover:   #232833;
+
+  --c-border:          #262b36;
+  --c-border-soft:     #232833;
+  --c-border-neutral:  #232833;
+  --c-border-strong:   #2d3340;
+
+  --c-text:            #e6e9ef;
+  --c-text-strong:     #c3cad6;
+  --c-text-secondary:  #9aa3b2;
+  --c-text-muted:      #6b7385;
+  --c-text-faint:      #6b7385;
+
+  /* A shade under --c-surface, so a code block still reads as recessed rather
+     than merging into the card it sits on. */
+  --c-code-bg:         #0b0d12;
+  --c-code-text:       #c9d1de;
+
+  --c-accent:          #4f8cff;
+  --c-accent-strong:   #7aa9ff;
+  --c-accent-subtle:   rgba(79, 140, 255, 0.14);
+  --c-accent-border:   rgba(79, 140, 255, 0.34);
+
+  --c-success:         #34d399;
+  --c-success-strong:  #6ee7b7;
+  --c-success-subtle:  rgba(52, 211, 153, 0.13);
+  --c-success-border:  rgba(52, 211, 153, 0.30);
+  --c-on-success:      #06281d;
+
+  --c-error:           #f87171;
+  --c-error-strong:    #fca5a5;
+  --c-error-subtle:    rgba(248, 113, 113, 0.13);
+  --c-error-border:    rgba(248, 113, 113, 0.30);
+
+  --c-warning:         #fbbf24;
+  --c-warning-strong:  #fcd34d;
+  --c-warning-subtle:  rgba(251, 191, 36, 0.12);
+  --c-warning-border:  rgba(251, 191, 36, 0.30);
 }
 
 /* ───────────────────────────────────────────

@@ -63,6 +63,48 @@ const VERIFICATION_RANK = {
     corroborated: 2,
     verified: 3,
 };
+// ---------------------------------------------------------------------------
+// Authorship
+//
+// A byline is assembled from three tables: the account owns the problem, the
+// agent identity says which agent published it, and the avatar lives on
+// whichever auth identity the account signed in with. Selected as columns on
+// the query that already runs rather than fetched per row — a page of twenty
+// problems would otherwise cost sixty extra round trips for one line of text.
+// ---------------------------------------------------------------------------
+/** Author columns, spread into a problem query's select list. */
+const AUTHOR_COLUMNS = {
+    authorKind: schema.problem.authorKind,
+    authorHandle: schema.account.handle,
+    authorDisplayName: schema.account.displayName,
+    authorAgentName: schema.agentIdentity.agentName,
+    /**
+     * An account can hold more than one auth identity — GitHub and Google both
+     * resolving to one account — and only some carry a picture. Any will do;
+     * `LIMIT 1` is what stops the subquery from multiplying the outer row.
+     */
+    authorAvatarUrl: sql `(SELECT ident.avatar_url FROM ${schema.authIdentity} ident
+    WHERE ident.account_id = ${schema.problem}.author_account_id AND ident.avatar_url IS NOT NULL LIMIT 1)`,
+};
+/**
+ * Null when the account is gone.
+ *
+ * `authorAccountId` is `ON DELETE SET NULL`, so a problem outlives the account
+ * that published it. Substituting a placeholder handle would put a name on the
+ * page that belongs to nobody, so this returns null and the client renders no
+ * byline at all.
+ */
+function problemAuthorFrom(row) {
+    if (!row.authorHandle)
+        return null;
+    return {
+        handle: row.authorHandle,
+        displayName: row.authorDisplayName,
+        avatarUrl: row.authorAvatarUrl,
+        kind: row.authorKind,
+        agentName: row.authorAgentName,
+    };
+}
 export async function registerRoutes(app, ctx) {
     app.get('/health', async () => ({
         status: 'ok',
@@ -787,8 +829,13 @@ export async function registerRoutes(app, ctx) {
             language: schema.problem.language,
             createdAt: schema.problem.createdAt,
             total: sql `count(*) over()`.mapWith(Number),
+            ...AUTHOR_COLUMNS,
         })
             .from(schema.problem)
+            // Left joins throughout: an unattributed problem still belongs in the
+            // list. An inner join would quietly drop it.
+            .leftJoin(schema.account, eq(schema.account.id, schema.problem.authorAccountId))
+            .leftJoin(schema.agentIdentity, eq(schema.agentIdentity.id, schema.problem.authorAgentIdentityId))
             .where(where)
             .orderBy(desc(schema.problem.createdAt))
             .limit(limit)
@@ -820,6 +867,7 @@ export async function registerRoutes(app, ctx) {
                 bestVerification,
                 totalReports: list.reduce((n, s) => n + s.successCount + s.failureCount + s.partialCount, 0),
                 createdAt: row.createdAt.toISOString(),
+                author: problemAuthorFrom(row),
             };
         });
         // Applied after assembly because "verified" is a property of the attached
@@ -843,8 +891,11 @@ export async function registerRoutes(app, ctx) {
             createdAt: schema.problem.createdAt,
             normalizedError: schema.problem.normalizedError,
             signature: schema.problem.signature,
+            ...AUTHOR_COLUMNS,
         })
             .from(schema.problem)
+            .leftJoin(schema.account, eq(schema.account.id, schema.problem.authorAccountId))
+            .leftJoin(schema.agentIdentity, eq(schema.agentIdentity.id, schema.problem.authorAgentIdentityId))
             .where(eq(schema.problem.id, id))
             .limit(1);
         if (!row)
@@ -865,6 +916,7 @@ export async function registerRoutes(app, ctx) {
             bestVerification,
             totalReports: solutions.reduce((n, s) => n + s.successCount + s.failureCount + s.partialCount, 0),
             createdAt: row.createdAt.toISOString(),
+            author: problemAuthorFrom(row),
             normalizedError: row.normalizedError,
             signature: row.signature,
             solutions: solutions.map((s) => ({

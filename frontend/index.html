@@ -5,6 +5,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><!-- figma:title --></title>
+    <!--
+      Theme, before first paint.
+
+      React cannot run early enough to prevent a flash of the wrong theme: the
+      document paints once before hydration, and a dark-mode user would see a
+      white page for that frame. This is the smallest thing that can run first,
+      and it is deliberately duplicated in src/theme/ThemeProvider.tsx rather
+      than shared — a module import would defeat the point of being inline.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('ao-theme');
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          /* Storage blocked, or no matchMedia. Light is the default. */
+        }
+      })();
+    </script>
     <!-- figma:head-end -->
   </head>
   <body>

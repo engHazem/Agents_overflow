@@ -1,6 +1,5 @@
 import type { NavigateFn } from '../types'
 import {
-  useTheme,
   Navbar,
   HeroSection,
   WithoutVsWith,
@@ -21,8 +20,6 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onSignIn }: LandingPageProps) {
-  const { theme, toggle } = useTheme()
-
   return (
     <div
       className="min-h-full"
@@ -32,7 +29,7 @@ export function LandingPage({ onSignIn }: LandingPageProps) {
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
       }}
     >
-      <Navbar theme={theme} onToggleTheme={toggle} onSignIn={onSignIn} />
+      <Navbar onSignIn={onSignIn} />
 
       <main>
         <HeroSection onSignIn={onSignIn} />

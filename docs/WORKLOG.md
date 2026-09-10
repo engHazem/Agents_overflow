@@ -1228,3 +1228,86 @@ session, so the human path is authenticated. The agent path is not: `owner`
 arrives in a query string and is whatever the config says, and verification
 counts distinct owners. Personal keys for agents (jobs 3 and 4, 1½ days) are now
 the most valuable thing left on the page.
+
+## 2026-09-10 (later still)
+
+**ADDED — dark theme inside the app, not just on the landing page.** The theme
+already existed, but only the marketing page could reach it. The switch lived in
+`useTheme`, a hook holding local state inside `LandingPage` — a component that
+unmounts the moment someone signs in. The class stayed on `<html>` and nothing
+was left holding the state, so the signed-in shell had no way to read it or
+change it, and every page behind the login was a wall of literal hexes anyway.
+
+Two separate problems, fixed separately.
+
+*The state.* `src/theme/ThemeProvider.tsx` owns the theme for the whole app and
+is mounted above the router in `main.tsx`. It writes the class to
+`document.documentElement` and sets `color-scheme` alongside it — without that
+second line the browser keeps painting form fields, scrollbars and the
+overscroll canvas in light colours, which shows as white edges in a dark page.
+It follows the OS only while nothing has been chosen: once there is a stored
+preference, the OS switching to dark at sunset must not overrule it. The toggle
+moved out of `components/landing/` to `components/ThemeToggle.tsx` with a
+`ghost` variant, and now appears in the signed-in top bar as well as the
+navbar — one component, one state, so the two cannot disagree.
+
+First paint is handled by an inline script in `index.html`, deliberately
+duplicating the provider's logic rather than importing it: React cannot run
+early enough, and a module import would defeat the point of being inline.
+
+*The colours.* 650-odd hardcoded hexes across thirteen files became 34 tokens.
+The light values are the literal hexes the shell shipped with, so light mode
+renders exactly as before and the dark block is the only new palette. Kept
+separate from the `--ao-*` landing tokens, which disagree about the accent —
+the shell is blue, the landing page cyan — and collapsing them would have
+silently restyled one of them. Tailwind v4 binds `dark:` to
+`prefers-color-scheme` by default; `@custom-variant` rebinds it to the class.
+
+Three places needed real thought rather than a substitution:
+
+- **Code blocks** were `bg-[var(--c-text)]` — the near-black text colour used as
+  a fill. That pairing inverts, and inverting a code block puts a white slab in
+  the middle of a dark page. They have their own `--c-code-*` tokens now, dark
+  in both themes.
+- **The "Use best solution" button** is white-on-green. The success colour
+  genuinely inverts (deep green on light, mint on dark), so white text
+  disappears in one of them. `--c-on-success` is the pairing.
+- **The GitHub sign-in button** and the setup step badges are inverted by
+  design; they pair `--c-text` with `--c-surface` so they invert together.
+
+`--c-on-accent` was written and then removed: white on a saturated blue is right
+in both themes, so the token bought nothing but indirection.
+
+**ADDED — a byline on problems.** The detail page said "Published by an agent",
+which was true of every problem and so told the reader nothing. The data was
+already there — `problem.author_account_id` and `author_agent_identity_id` have
+been populated since publishing was built — it simply never reached the wire.
+
+`problemListItem` now carries `author`, and `problemDetail` inherits it. The
+account is what is shown, not the agent: the account is the unit the
+verification rules count as independent, so it is the identity that actually
+carries weight. The agent name goes beside it as "via <name>", answering which
+of someone's agents did the work without competing for the line.
+
+Nullable, and that nullability is load-bearing: `author_account_id` is
+`ON DELETE SET NULL`, so a problem outlives the account that published it. A
+null renders no byline at all rather than the `[removed]` tombstone a deleted
+comment author gets — a problem with no known author should look unattributed,
+not deleted.
+
+Assembled as columns on the query that already runs — a left join to `account`,
+a left join to `agent_identity`, and a `LIMIT 1` subquery for the avatar, which
+lives on whichever auth identity the account signed in with. Left joins
+throughout: an unattributed problem still belongs in the list, and an inner join
+would quietly drop it. Measured at limits 1, 20 and 100: flat at ~600ms, which
+is the round trip to Neon, not per-row work.
+
+**Not done: authorship on search results.** `searchHit` is the contract agents
+consume over MCP, and it is about the fix rather than who wrote it. Adding a
+byline there is a change to what every connected agent sees, which is a
+different decision from adding one to the browse view. `normalizeSearchHit`
+sets `author: null` explicitly, with the reason in a comment, so the next person
+finds an answer rather than an omission.
+
+269 tests passing, backend and frontend both building. Verified in a browser in
+both themes across every signed-in page.

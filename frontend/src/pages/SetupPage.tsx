@@ -29,9 +29,9 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
   return (
     <button
       onClick={copy}
-      className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-500 text-[#374151] border border-[#D1D9E0] rounded-[6px] hover:bg-[#EEF2F7] cursor-pointer transition-colors flex-shrink-0 bg-white"
+      className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-500 text-[var(--c-text-strong)] border border-[var(--c-border)] rounded-[6px] hover:bg-[var(--c-surface-chrome)] cursor-pointer transition-colors flex-shrink-0 bg-[var(--c-surface)]"
     >
-      {copied ? <Check size={11} className="text-green-600" /> : <Copy size={11} />}
+      {copied ? <Check size={11} className="text-[var(--c-success)]" /> : <Copy size={11} />}
       {copied ? 'Copied' : (label ?? 'Copy')}
     </button>
   )
@@ -65,7 +65,7 @@ function DownloadButton({ path, contents }: { path: string; contents: string }) 
   return (
     <button
       onClick={download}
-      className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer transition-colors flex-shrink-0"
+      className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer transition-colors flex-shrink-0"
     >
       <Download size={11} />
       Download
@@ -89,13 +89,13 @@ function Section({
   return (
     <section className="mb-7">
       <div className="flex items-center gap-2 mb-1">
-        <span className="w-5 h-5 rounded-full bg-[#20242B] text-white text-[10px] font-700 flex items-center justify-center flex-shrink-0">
+        <span className="w-5 h-5 rounded-full bg-[var(--c-text)] text-[var(--c-surface)] text-[10px] font-700 flex items-center justify-center flex-shrink-0">
           {step}
         </span>
-        <span className="text-[#6B7280]">{icon}</span>
-        <h2 className="text-[14px] font-700 text-[#20242B]">{title}</h2>
+        <span className="text-[var(--c-text-secondary)]">{icon}</span>
+        <h2 className="text-[14px] font-700 text-[var(--c-text)]">{title}</h2>
       </div>
-      {subtitle && <p className="text-[12px] text-[#6B7280] mb-3 ml-7">{subtitle}</p>}
+      {subtitle && <p className="text-[12px] text-[var(--c-text-secondary)] mb-3 ml-7">{subtitle}</p>}
       <div className="ml-7">{children}</div>
     </section>
   )
@@ -105,7 +105,7 @@ function Section({
 function CommandBlock({ command }: { command: string }) {
   return (
     <div className="flex items-start gap-2">
-      <code className="mono text-[11px] bg-[#20242B] text-[#E6E8EC] px-2 py-1.5 rounded flex-1 whitespace-pre-wrap break-all leading-relaxed">
+      <code className="mono text-[11px] bg-[var(--c-code-bg)] text-[var(--c-code-text)] px-2 py-1.5 rounded flex-1 whitespace-pre-wrap break-all leading-relaxed">
         {command}
       </code>
       <CopyButton text={command} />
@@ -123,15 +123,15 @@ function CommandBlock({ command }: { command: string }) {
  */
 function FileCard({ file, locations }: { file: SetupFile; locations: ConfigLocation[] }) {
   return (
-    <div className="border border-[#D1D9E0] rounded-[6px] mb-3 overflow-hidden">
-      <div className="flex items-center justify-between gap-2 px-3 py-2 bg-[#F8FAFC] border-b border-[#D1D9E0]">
+    <div className="border border-[var(--c-border)] rounded-[6px] mb-3 overflow-hidden">
+      <div className="flex items-center justify-between gap-2 px-3 py-2 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="mono text-[12px] font-600 text-[#20242B] truncate">{file.path}</span>
+          <span className="mono text-[12px] font-600 text-[var(--c-text)] truncate">{file.path}</span>
           <span
             className={`text-[10px] px-1.5 py-0.5 rounded border flex-shrink-0 ${
               file.action === 'merge'
-                ? 'bg-amber-50 text-amber-700 border-amber-200'
-                : 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]'
+                ? 'bg-[var(--c-warning-subtle)] text-[var(--c-warning-strong)] border-[var(--c-warning-border)]'
+                : 'bg-[var(--c-accent-subtle)] text-[var(--c-accent)] border-[var(--c-accent-border)]'
             }`}
           >
             {file.action === 'merge' ? 'add to existing' : 'new file'}
@@ -143,11 +143,11 @@ function FileCard({ file, locations }: { file: SetupFile; locations: ConfigLocat
         </div>
       </div>
 
-      <div className="px-3 py-2 border-b border-[#F1F5F9]">
-        <div className="text-[11px] text-[#6B7280]">{file.purpose}</div>
-        <div className="text-[11px] text-[#374151] mt-1">
+      <div className="px-3 py-2 border-b border-[var(--c-surface-sunken)]">
+        <div className="text-[11px] text-[var(--c-text-secondary)]">{file.purpose}</div>
+        <div className="text-[11px] text-[var(--c-text-strong)] mt-1">
           Save it as{' '}
-          <code className="mono bg-[#F8FAFC] border border-[#D1D9E0] px-1 py-0.5 rounded">
+          <code className="mono bg-[var(--c-surface-raised)] border border-[var(--c-border)] px-1 py-0.5 rounded">
             {file.path}
           </code>{' '}
           {/*
@@ -170,16 +170,16 @@ function FileCard({ file, locations }: { file: SetupFile; locations: ConfigLocat
           goes wrong — so each path is given in full.
         */}
         {locations.length > 0 && (
-          <div className="mt-2 border border-[#D1D9E0] rounded-[6px] overflow-hidden">
+          <div className="mt-2 border border-[var(--c-border)] rounded-[6px] overflow-hidden">
             {locations.map((location) => (
               <div
                 key={location.os}
-                className="flex items-start gap-2 px-2 py-1.5 border-b border-[#F1F5F9] last:border-b-0 bg-white"
+                className="flex items-start gap-2 px-2 py-1.5 border-b border-[var(--c-surface-sunken)] last:border-b-0 bg-[var(--c-surface)]"
               >
-                <span className="text-[10px] font-600 text-[#6B7280] w-24 flex-shrink-0 pt-0.5">
+                <span className="text-[10px] font-600 text-[var(--c-text-secondary)] w-24 flex-shrink-0 pt-0.5">
                   {location.os}
                 </span>
-                <code className="mono text-[10px] text-[#20242B] break-all flex-1">
+                <code className="mono text-[10px] text-[var(--c-text)] break-all flex-1">
                   {location.path}
                 </code>
                 <CopyButton text={location.path} label="Path" />
@@ -189,7 +189,7 @@ function FileCard({ file, locations }: { file: SetupFile; locations: ConfigLocat
         )}
       </div>
 
-      <pre className="mono text-[11px] bg-[#20242B] text-[#E6E8EC] p-3 overflow-x-auto max-h-72 whitespace-pre">
+      <pre className="mono text-[11px] bg-[var(--c-code-bg)] text-[var(--c-code-text)] p-3 overflow-x-auto max-h-72 whitespace-pre">
         {file.contents}
       </pre>
     </div>
@@ -206,38 +206,38 @@ function FileCard({ file, locations }: { file: SetupFile; locations: ConfigLocat
  */
 function EndpointCard({ guide }: { guide: SetupGuide }) {
   return (
-    <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden bg-white">
-      <div className="px-3 py-2 bg-[#F8FAFC] border-b border-[#D1D9E0] flex items-center gap-2">
-        <Server size={12} className="text-[#6B7280]" />
-        <span className="text-[11px] font-600 text-[#374151]">
+    <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden bg-[var(--c-surface)]">
+      <div className="px-3 py-2 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)] flex items-center gap-2">
+        <Server size={12} className="text-[var(--c-text-secondary)]" />
+        <span className="text-[11px] font-600 text-[var(--c-text-strong)]">
           Your MCP endpoint — a remote server, so there is nothing to install
         </span>
       </div>
 
       <div className="p-3">
         <div className="flex items-start gap-2">
-          <code className="mono text-[12px] bg-[#20242B] text-[#E6E8EC] px-2.5 py-2 rounded flex-1 break-all leading-relaxed">
+          <code className="mono text-[12px] bg-[var(--c-code-bg)] text-[var(--c-code-text)] px-2.5 py-2 rounded flex-1 break-all leading-relaxed">
             {guide.serverUrl}
           </code>
           <CopyButton text={guide.serverUrl} label="Copy URL" />
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[#6B7280]">
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[var(--c-text-secondary)]">
           <span>
             Owner{' '}
-            <code className="mono bg-[#F8FAFC] border border-[#D1D9E0] px-1 py-0.5 rounded text-[#20242B]">
+            <code className="mono bg-[var(--c-surface-raised)] border border-[var(--c-border)] px-1 py-0.5 rounded text-[var(--c-text)]">
               {guide.owner}
             </code>
           </span>
           <span>
             Transport{' '}
-            <span className="font-600 text-[#374151]">
+            <span className="font-600 text-[var(--c-text-strong)]">
               {guide.transport === 'http' ? 'HTTP (direct)' : 'stdio via bridge'}
             </span>
           </span>
           <span>
             API{' '}
-            <code className="mono text-[10px] text-[#374151] break-all">{guide.apiUrl}</code>
+            <code className="mono text-[10px] text-[var(--c-text-strong)] break-all">{guide.apiUrl}</code>
           </span>
         </div>
 
@@ -248,9 +248,9 @@ function EndpointCard({ guide }: { guide: SetupGuide }) {
           ever count.
         */}
         {guide.ownerIsPlaceholder && (
-          <div className="mt-3 flex items-start gap-2 border border-[#FED7AA] bg-[#FFF7ED] rounded-[6px] p-2.5">
-            <AlertTriangle size={13} className="text-amber-500 flex-shrink-0 mt-0.5" />
-            <div className="text-[11px] text-amber-800 leading-relaxed">
+          <div className="mt-3 flex items-start gap-2 border border-[var(--c-warning-border)] bg-[var(--c-warning-subtle)] rounded-[6px] p-2.5">
+            <AlertTriangle size={13} className="text-[var(--c-warning)] flex-shrink-0 mt-0.5" />
+            <div className="text-[11px] text-[var(--c-warning-strong)] leading-relaxed">
               <span className="font-600">This is a placeholder handle.</span> Sign in and reload
               this page to get your own, or replace{' '}
               <code className="mono">my-handle</code> everywhere it appears before you save
@@ -305,27 +305,27 @@ export function SetupPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-6">
-      <h1 className="text-[20px] font-700 text-[#20242B] mb-1">Connect your agent</h1>
-      <p className="text-[13px] text-[#6B7280] mb-6">
+      <h1 className="text-[20px] font-700 text-[var(--c-text)] mb-1">Connect your agent</h1>
+      <p className="text-[13px] text-[var(--c-text-secondary)] mb-6">
         One URL, one instruction file, one restart. After this your agent searches here before
         guessing, and reports back what actually worked.
       </p>
 
       {isLoading && (
-        <div className="border border-[#D1D9E0] rounded-[6px] p-8 text-center text-[13px] text-[#6B7280]">
-          <Loader2 size={18} className="animate-spin mx-auto mb-2 text-[#2563EB]" />
+        <div className="border border-[var(--c-border)] rounded-[6px] p-8 text-center text-[13px] text-[var(--c-text-secondary)]">
+          <Loader2 size={18} className="animate-spin mx-auto mb-2 text-[var(--c-accent)]" />
           Building your instructions…
         </div>
       )}
 
       {error && (
-        <div className="border border-red-200 bg-red-50 rounded-[6px] p-6 text-center">
-          <AlertCircle size={18} className="text-red-500 mx-auto mb-2" />
-          <div className="text-[13px] font-600 text-[#20242B] mb-1">Could not load the instructions</div>
-          <div className="text-[12px] text-[#6B7280] mb-3">{normalizeError(error).message}</div>
+        <div className="border border-[var(--c-error-border)] bg-[var(--c-error-subtle)] rounded-[6px] p-6 text-center">
+          <AlertCircle size={18} className="text-[var(--c-error)] mx-auto mb-2" />
+          <div className="text-[13px] font-600 text-[var(--c-text)] mb-1">Could not load the instructions</div>
+          <div className="text-[12px] text-[var(--c-text-secondary)] mb-3">{normalizeError(error).message}</div>
           <button
             onClick={() => refetch()}
-            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer"
+            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer"
           >
             Retry
           </button>
@@ -348,8 +348,8 @@ export function SetupPage() {
                   onClick={() => selectClient(option.value)}
                   className={`px-3 py-1.5 rounded-[6px] text-[12px] font-500 border cursor-pointer transition-colors ${
                     client === option.value
-                      ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                      : 'bg-white text-[#374151] border-[#D1D9E0] hover:border-[#2563EB] hover:text-[#2563EB]'
+                      ? 'bg-[var(--c-accent)] text-white border-[var(--c-accent)]'
+                      : 'bg-[var(--c-surface)] text-[var(--c-text-strong)] border-[var(--c-border)] hover:border-[var(--c-accent)] hover:text-[var(--c-accent)]'
                   }`}
                 >
                   {option.label}
@@ -358,9 +358,9 @@ export function SetupPage() {
             </div>
 
             {!guide.supported && (
-              <div className="mt-3 flex items-start gap-2 border border-[#FED7AA] bg-[#FFF7ED] rounded-[6px] p-3">
-                <AlertTriangle size={14} className="text-amber-500 flex-shrink-0 mt-0.5" />
-                <div className="text-[12px] text-amber-800 leading-relaxed">
+              <div className="mt-3 flex items-start gap-2 border border-[var(--c-warning-border)] bg-[var(--c-warning-subtle)] rounded-[6px] p-3">
+                <AlertTriangle size={14} className="text-[var(--c-warning)] flex-shrink-0 mt-0.5" />
+                <div className="text-[12px] text-[var(--c-warning-strong)] leading-relaxed">
                   No specific recipe for this client, so the block below is a standard remote MCP
                   server. Check your client's documentation for where its config lives and which
                   field it reads a URL from — the URL itself is the same either way.
@@ -391,7 +391,7 @@ export function SetupPage() {
             }
           >
             {guide.quickStart.available && (
-              <div className="flex gap-1 mb-3 p-0.5 bg-[#F1F5F9] rounded-[6px] w-fit">
+              <div className="flex gap-1 mb-3 p-0.5 bg-[var(--c-surface-sunken)] rounded-[6px] w-fit">
                 {/*
                   Labelled by outcome rather than by mechanism: for most clients
                   the quick route is a command, but for Cursor it is a URL
@@ -407,8 +407,8 @@ export function SetupPage() {
                     onClick={() => setRouteChoice(value)}
                     className={`px-3 py-1 rounded-[4px] text-[12px] font-500 cursor-pointer transition-colors ${
                       route === value
-                        ? 'bg-white text-[#20242B] shadow-sm'
-                        : 'text-[#6B7280] hover:text-[#374151]'
+                        ? 'bg-[var(--c-surface)] text-[var(--c-text)] shadow-sm'
+                        : 'text-[var(--c-text-secondary)] hover:text-[var(--c-text-strong)]'
                     }`}
                   >
                     {label}
@@ -418,30 +418,30 @@ export function SetupPage() {
             )}
 
             {route === 'command' ? (
-              <div className="border border-[#D1D9E0] rounded-[6px] bg-white p-3">
-                <div className="text-[12px] font-600 text-[#20242B] mb-0.5">
+              <div className="border border-[var(--c-border)] rounded-[6px] bg-[var(--c-surface)] p-3">
+                <div className="text-[12px] font-600 text-[var(--c-text)] mb-0.5">
                   {guide.quickStart.title}
                 </div>
-                <div className="text-[12px] text-[#6B7280] leading-relaxed mb-3">
+                <div className="text-[12px] text-[var(--c-text-secondary)] leading-relaxed mb-3">
                   {guide.quickStart.detail}
                 </div>
 
                 <div className="space-y-3">
                   {guide.quickStart.commands.map((item) => (
                     <div key={item.label}>
-                      <div className="text-[11px] font-600 text-[#374151] mb-1">{item.label}</div>
+                      <div className="text-[11px] font-600 text-[var(--c-text-strong)] mb-1">{item.label}</div>
                       <CommandBlock command={item.command} />
                       {item.detail && (
-                        <div className="text-[11px] text-[#6B7280] mt-1">{item.detail}</div>
+                        <div className="text-[11px] text-[var(--c-text-secondary)] mt-1">{item.detail}</div>
                       )}
                     </div>
                   ))}
                 </div>
 
                 {guide.quickStart.expect && (
-                  <div className="mt-3 flex items-start gap-2 border border-[#BFDBFE] bg-[#EFF6FF] rounded-[6px] p-2.5">
-                    <CheckCircle2 size={13} className="text-[#2563EB] flex-shrink-0 mt-0.5" />
-                    <div className="text-[11px] text-[#374151] leading-relaxed">
+                  <div className="mt-3 flex items-start gap-2 border border-[var(--c-accent-border)] bg-[var(--c-accent-subtle)] rounded-[6px] p-2.5">
+                    <CheckCircle2 size={13} className="text-[var(--c-accent)] flex-shrink-0 mt-0.5" />
+                    <div className="text-[11px] text-[var(--c-text-strong)] leading-relaxed">
                       <span className="font-600">Expect: </span>
                       {guide.quickStart.expect}
                     </div>
@@ -452,11 +452,11 @@ export function SetupPage() {
               <div>
                 {configFile && <FileCard file={configFile} locations={guide.locations} />}
 
-                <div className="border border-[#D1D9E0] rounded-[6px] divide-y divide-[#D1D9E0] bg-white">
+                <div className="border border-[var(--c-border)] rounded-[6px] divide-y divide-[var(--c-border)] bg-[var(--c-surface)]">
                   {guide.steps.map((step) => (
                     <div key={step.title} className="p-3">
-                      <div className="text-[12px] font-600 text-[#20242B] mb-0.5">{step.title}</div>
-                      <div className="text-[12px] text-[#6B7280] leading-relaxed">{step.detail}</div>
+                      <div className="text-[12px] font-600 text-[var(--c-text)] mb-0.5">{step.title}</div>
+                      <div className="text-[12px] text-[var(--c-text-secondary)] leading-relaxed">{step.detail}</div>
                     </div>
                   ))}
                 </div>
@@ -483,7 +483,7 @@ export function SetupPage() {
 
           {/* 5 — restart */}
           <Section step="5" icon={<Zap size={14} />} title={guide.restart.title}>
-            <div className="border border-[#D1D9E0] rounded-[6px] p-3 text-[12px] text-[#6B7280] leading-relaxed bg-white">
+            <div className="border border-[var(--c-border)] rounded-[6px] p-3 text-[12px] text-[var(--c-text-secondary)] leading-relaxed bg-[var(--c-surface)]">
               {guide.restart.detail}
             </div>
           </Section>
@@ -495,11 +495,11 @@ export function SetupPage() {
             title="Check it actually worked"
             subtitle="Worth doing once: a failed connection produces no error anywhere."
           >
-            <div className="border border-[#D1D9E0] rounded-[6px] divide-y divide-[#D1D9E0] bg-white">
+            <div className="border border-[var(--c-border)] rounded-[6px] divide-y divide-[var(--c-border)] bg-[var(--c-surface)]">
               {guide.verification.map((step) => (
                 <div key={step.title} className="p-3">
-                  <div className="text-[12px] font-600 text-[#20242B] mb-0.5">{step.title}</div>
-                  <div className="text-[12px] text-[#6B7280] leading-relaxed">{step.detail}</div>
+                  <div className="text-[12px] font-600 text-[var(--c-text)] mb-0.5">{step.title}</div>
+                  <div className="text-[12px] text-[var(--c-text-secondary)] leading-relaxed">{step.detail}</div>
                   {step.command && (
                     <div className="mt-2">
                       <CommandBlock command={step.command} />
@@ -517,20 +517,20 @@ export function SetupPage() {
             title="If something is wrong"
             subtitle="Listed by symptom, because that is what you have when it fails."
           >
-            <div className="border border-[#D1D9E0] rounded-[6px] divide-y divide-[#D1D9E0] bg-white">
+            <div className="border border-[var(--c-border)] rounded-[6px] divide-y divide-[var(--c-border)] bg-[var(--c-surface)]">
               {guide.troubleshooting.map((item) => (
                 <details key={item.symptom} className="group">
-                  <summary className="p-3 cursor-pointer text-[12px] font-500 text-[#20242B] hover:bg-[#F8FAFC] flex items-start gap-2">
-                    <HelpCircle size={13} className="text-[#9CA3AF] flex-shrink-0 mt-0.5" />
+                  <summary className="p-3 cursor-pointer text-[12px] font-500 text-[var(--c-text)] hover:bg-[var(--c-surface-raised)] flex items-start gap-2">
+                    <HelpCircle size={13} className="text-[var(--c-text-muted)] flex-shrink-0 mt-0.5" />
                     <span>{item.symptom}</span>
                   </summary>
                   <div className="px-3 pb-3 pl-8 space-y-1.5">
-                    <div className="text-[12px] text-[#6B7280] leading-relaxed">
-                      <span className="font-600 text-[#374151]">Why: </span>
+                    <div className="text-[12px] text-[var(--c-text-secondary)] leading-relaxed">
+                      <span className="font-600 text-[var(--c-text-strong)]">Why: </span>
                       {item.cause}
                     </div>
-                    <div className="text-[12px] text-[#6B7280] leading-relaxed">
-                      <span className="font-600 text-[#374151]">Fix: </span>
+                    <div className="text-[12px] text-[var(--c-text-secondary)] leading-relaxed">
+                      <span className="font-600 text-[var(--c-text-strong)]">Fix: </span>
                       {item.fix}
                     </div>
                   </div>
@@ -540,14 +540,14 @@ export function SetupPage() {
           </Section>
 
           {guide.notes.length > 0 && (
-            <div className="border border-[#BFDBFE] bg-[#EFF6FF] rounded-[6px] p-3 ml-7">
-              <div className="text-[11px] font-600 text-[#2563EB] uppercase tracking-wide mb-2">
+            <div className="border border-[var(--c-accent-border)] bg-[var(--c-accent-subtle)] rounded-[6px] p-3 ml-7">
+              <div className="text-[11px] font-600 text-[var(--c-accent)] uppercase tracking-wide mb-2">
                 Worth knowing
               </div>
               <ul className="space-y-1.5">
                 {guide.notes.map((note) => (
-                  <li key={note} className="text-[12px] text-[#374151] leading-relaxed flex gap-2">
-                    <span className="text-[#2563EB] flex-shrink-0">·</span>
+                  <li key={note} className="text-[12px] text-[var(--c-text-strong)] leading-relaxed flex gap-2">
+                    <span className="text-[var(--c-accent)] flex-shrink-0">·</span>
                     {note}
                   </li>
                 ))}

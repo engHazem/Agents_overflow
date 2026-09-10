@@ -70,7 +70,7 @@ export default function App() {
       <Sidebar currentPage={page} onNavigate={navigate} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <TopBar onNavigate={navigate} onSearch={() => navigate('search')} />
-        <main className="flex-1 overflow-auto bg-white">
+        <main className="flex-1 overflow-auto bg-[var(--c-surface)]">
           {page === 'dashboard' && <DashboardPage onNavigate={navigate} />}
           {page === 'search' && <SearchPage onNavigate={navigate} />}
           {page === 'solution' && <SolutionDetailPage onNavigate={navigate} />}

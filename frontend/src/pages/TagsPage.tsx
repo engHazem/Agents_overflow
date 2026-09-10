@@ -22,8 +22,8 @@ export function TagsPage({ onNavigate }: { onNavigate: NavigateFn }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-6">
       <div className="mb-5">
-        <h1 className="text-[20px] font-700 text-[#20242B] mb-1">Tags</h1>
-        <p className="text-[13px] text-[#6B7280]">Browse solutions by technology, framework, or tool.</p>
+        <h1 className="text-[20px] font-700 text-[var(--c-text)] mb-1">Tags</h1>
+        <p className="text-[13px] text-[var(--c-text-secondary)]">Browse solutions by technology, framework, or tool.</p>
       </div>
 
       <div className="flex items-center gap-2 mb-5">
@@ -32,25 +32,25 @@ export function TagsPage({ onNavigate }: { onNavigate: NavigateFn }) {
           value={filter}
           onChange={e => setFilter(e.target.value)}
           placeholder="Filter tags..."
-          className="flex-1 max-w-xs px-3 py-2 text-[13px] border border-[#D1D9E0] rounded-[6px] outline-none focus:border-[#2563EB] placeholder:text-[#9CA3AF]"
+          className="flex-1 max-w-xs px-3 py-2 text-[13px] border border-[var(--c-border)] rounded-[6px] outline-none focus:border-[var(--c-accent)] placeholder:text-[var(--c-text-muted)]"
         />
       </div>
 
       {isLoading && (
-        <div className="border border-[#D1D9E0] rounded-[6px] p-8 text-center text-[13px] text-[#6B7280]">
-          <Loader2 size={18} className="animate-spin mx-auto mb-2 text-[#2563EB]" />
+        <div className="border border-[var(--c-border)] rounded-[6px] p-8 text-center text-[13px] text-[var(--c-text-secondary)]">
+          <Loader2 size={18} className="animate-spin mx-auto mb-2 text-[var(--c-accent)]" />
           Loading tags…
         </div>
       )}
 
       {error && (
-        <div className="border border-red-200 bg-red-50 rounded-[6px] p-6 text-center">
-          <AlertCircle size={18} className="text-red-500 mx-auto mb-2" />
-          <div className="text-[13px] font-600 text-[#20242B] mb-1">Unable to load tags</div>
-          <div className="text-[12px] text-[#6B7280] mb-3">{normalizeError(error).message}</div>
+        <div className="border border-[var(--c-error-border)] bg-[var(--c-error-subtle)] rounded-[6px] p-6 text-center">
+          <AlertCircle size={18} className="text-[var(--c-error)] mx-auto mb-2" />
+          <div className="text-[13px] font-600 text-[var(--c-text)] mb-1">Unable to load tags</div>
+          <div className="text-[12px] text-[var(--c-text-secondary)] mb-3">{normalizeError(error).message}</div>
           <button
             onClick={() => refetch()}
-            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer"
+            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer"
           >
             Retry
           </button>
@@ -58,25 +58,25 @@ export function TagsPage({ onNavigate }: { onNavigate: NavigateFn }) {
       )}
 
       {!isLoading && !error && TAGS.length === 0 && (
-        <div className="border border-[#D1D9E0] rounded-[6px] p-8 text-center bg-[#F8FAFC]">
-          <div className="text-[13px] font-600 text-[#20242B] mb-1">No tags yet</div>
-          <div className="text-[12px] text-[#6B7280]">
+        <div className="border border-[var(--c-border)] rounded-[6px] p-8 text-center bg-[var(--c-surface-raised)]">
+          <div className="text-[13px] font-600 text-[var(--c-text)] mb-1">No tags yet</div>
+          <div className="text-[12px] text-[var(--c-text-secondary)]">
             Tags appear once problems are published with them.
           </div>
         </div>
       )}
 
       {!isLoading && !error && TAGS.length > 0 && (
-      <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden">
+      <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden">
         <table className="w-full text-[12px]">
           <thead>
-            <tr className="bg-[#F8FAFC] border-b border-[#D1D9E0]">
-              <th className="text-left px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Tag</th>
-              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Problems</th>
-              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Solutions</th>
-              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Verified</th>
-              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Verify rate</th>
-              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">Recent</th>
+            <tr className="bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
+              <th className="text-left px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Tag</th>
+              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Problems</th>
+              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Solutions</th>
+              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Verified</th>
+              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Verify rate</th>
+              <th className="text-right px-4 py-2.5 text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Recent</th>
             </tr>
           </thead>
           <tbody>
@@ -86,26 +86,26 @@ export function TagsPage({ onNavigate }: { onNavigate: NavigateFn }) {
                 <tr
                   key={tag.name}
                   onClick={() => openTag(tag.name)}
-                  className={`border-b last:border-b-0 border-[#D1D9E0] hover:bg-[#EFF6FF] cursor-pointer transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}`}
+                  className={`border-b last:border-b-0 border-[var(--c-border)] hover:bg-[var(--c-accent-subtle)] cursor-pointer transition-colors ${i % 2 === 0 ? 'bg-[var(--c-surface)]' : 'bg-[var(--c-surface-raised)]'}`}
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <Tag size={12} className="text-[#6B7280]" />
-                      <span className="font-600 text-[#2563EB]">{tag.name}</span>
+                      <Tag size={12} className="text-[var(--c-text-secondary)]" />
+                      <span className="font-600 text-[var(--c-accent)]">{tag.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right tabular-nums text-[#374151]">{tag.problemCount.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-right tabular-nums font-500 text-[#20242B]">{tag.problemCount.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-right tabular-nums text-green-600 font-500">{tag.verifiedCount.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right tabular-nums text-[var(--c-text-strong)]">{tag.problemCount.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right tabular-nums font-500 text-[var(--c-text)]">{tag.problemCount.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right tabular-nums text-[var(--c-success)] font-500">{tag.verifiedCount.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="w-16 h-1.5 bg-[#EEF2F7] rounded-full overflow-hidden">
-                        <div className="h-full bg-[#2563EB] rounded-full" style={{ width: `${rate}%` }} />
+                      <div className="w-16 h-1.5 bg-[var(--c-surface-chrome)] rounded-full overflow-hidden">
+                        <div className="h-full bg-[var(--c-accent)] rounded-full" style={{ width: `${rate}%` }} />
                       </div>
-                      <span className="tabular-nums font-600 text-[#2563EB] text-[11px] w-8 text-right">{rate}%</span>
+                      <span className="tabular-nums font-600 text-[var(--c-accent)] text-[11px] w-8 text-right">{rate}%</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right text-[#9CA3AF]">{'—'}</td>
+                  <td className="px-4 py-3 text-right text-[var(--c-text-muted)]">{'—'}</td>
                 </tr>
               )
             })}
@@ -114,7 +114,7 @@ export function TagsPage({ onNavigate }: { onNavigate: NavigateFn }) {
       </div>
       )}
 
-      <div className="mt-3 text-[11px] text-[#6B7280]">
+      <div className="mt-3 text-[11px] text-[var(--c-text-secondary)]">
         Counts are derived from the most recent problems — the API has no tag endpoint yet.
       </div>
     </div>

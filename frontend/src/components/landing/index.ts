@@ -1,4 +1,3 @@
-export { useTheme, ThemeToggle } from './ThemeToggle'
 export { Navbar } from './Navbar'
 export { HeroSection } from './HeroSection'
 export { AgentBattle } from './AgentBattle'

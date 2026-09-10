@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { Bot, Menu, X } from 'lucide-react'
-import { ThemeToggle } from './ThemeToggle'
+import { ThemeToggle } from '../ThemeToggle'
 
 interface NavbarProps {
-  theme: 'light' | 'dark'
-  onToggleTheme: () => void
   onSignIn: () => void
 }
 
@@ -14,7 +12,7 @@ const NAV_LINKS = [
   { label: 'API', href: '#api' },
 ]
 
-export function Navbar({ theme, onToggleTheme, onSignIn }: NavbarProps) {
+export function Navbar({ onSignIn }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
@@ -67,7 +65,7 @@ export function Navbar({ theme, onToggleTheme, onSignIn }: NavbarProps) {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+            <ThemeToggle className="w-9 h-9" />
 
             <button
               onClick={onSignIn}

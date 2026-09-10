@@ -39,17 +39,17 @@ import {
  */
 
 const STATUS_STYLE: Record<ProposalStatus, { label: string; className: string; icon: typeof Clock }> = {
-  pending: { label: 'Under review', className: 'bg-amber-50 text-amber-700 border-amber-200', icon: Clock },
-  approved: { label: 'Applied', className: 'bg-[#F0FDF4] text-green-700 border-[#BBF7D0]', icon: CheckCircle2 },
-  rejected: { label: 'Declined', className: 'bg-[#FEF2F2] text-red-600 border-[#FECACA]', icon: XCircle },
+  pending: { label: 'Under review', className: 'bg-[var(--c-warning-subtle)] text-[var(--c-warning-strong)] border-[var(--c-warning-border)]', icon: Clock },
+  approved: { label: 'Applied', className: 'bg-[var(--c-success-subtle)] text-[var(--c-success-strong)] border-[var(--c-success-border)]', icon: CheckCircle2 },
+  rejected: { label: 'Declined', className: 'bg-[var(--c-error-subtle)] text-[var(--c-error)] border-[var(--c-error-border)]', icon: XCircle },
   outdated: {
     label: 'Out of date',
-    className: 'bg-[#F1F5F9] text-[#6B7280] border-[#D1D9E0]',
+    className: 'bg-[var(--c-surface-sunken)] text-[var(--c-text-secondary)] border-[var(--c-border)]',
     icon: TriangleAlert,
   },
   needs_human: {
     label: 'Waiting on a person',
-    className: 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]',
+    className: 'bg-[var(--c-accent-subtle)] text-[var(--c-accent)] border-[var(--c-accent-border)]',
     icon: Clock,
   },
 }
@@ -60,7 +60,7 @@ function Avatar({ handle, url }: { handle: string; url: string | null }) {
   }
 
   return (
-    <span className="w-6 h-6 rounded-full bg-[#EEF2F7] text-[#6B7280] text-[10px] font-700 flex items-center justify-center flex-shrink-0">
+    <span className="w-6 h-6 rounded-full bg-[var(--c-surface-chrome)] text-[var(--c-text-secondary)] text-[10px] font-700 flex items-center justify-center flex-shrink-0">
       {handle.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2).toUpperCase() || '??'}
     </span>
   )
@@ -92,13 +92,13 @@ function VoteButtons({
         onClick={() => onVote(1)}
         disabled={disabled}
         title={myVote === 1 ? 'Remove your upvote' : 'This is useful'}
-        className={`${base} ${myVote === 1 ? 'text-[#2563EB]' : 'text-[#9CA3AF] hover:text-[#374151]'}`}
+        className={`${base} ${myVote === 1 ? 'text-[var(--c-accent)]' : 'text-[var(--c-text-muted)] hover:text-[var(--c-text-strong)]'}`}
       >
         <ArrowBigUp size={15} fill={myVote === 1 ? 'currentColor' : 'none'} />
       </button>
       <span
         className={`text-[11px] font-600 min-w-[14px] text-center ${
-          score > 0 ? 'text-[#2563EB]' : score < 0 ? 'text-red-500' : 'text-[#9CA3AF]'
+          score > 0 ? 'text-[var(--c-accent)]' : score < 0 ? 'text-[var(--c-error)]' : 'text-[var(--c-text-muted)]'
         }`}
       >
         {score}
@@ -107,7 +107,7 @@ function VoteButtons({
         onClick={() => onVote(-1)}
         disabled={disabled}
         title={myVote === -1 ? 'Remove your downvote' : 'This did not help'}
-        className={`${base} ${myVote === -1 ? 'text-red-500' : 'text-[#9CA3AF] hover:text-[#374151]'}`}
+        className={`${base} ${myVote === -1 ? 'text-[var(--c-error)]' : 'text-[var(--c-text-muted)] hover:text-[var(--c-text-strong)]'}`}
       >
         <ArrowBigDown size={15} fill={myVote === -1 ? 'currentColor' : 'none'} />
       </button>
@@ -118,21 +118,21 @@ function VoteButtons({
 /** Before and after for one field, stacked so long text stays readable. */
 function ChangeDiff({ field, before, after }: { field: EditableField; before: string | null; after: string }) {
   return (
-    <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden">
-      <div className="px-2 py-1 bg-[#F8FAFC] border-b border-[#D1D9E0] text-[10px] font-600 text-[#6B7280] uppercase tracking-wide">
+    <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden">
+      <div className="px-2 py-1 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)] text-[10px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">
         {FIELD_LABELS[field]}
       </div>
       {before !== null && (
-        <div className="px-2 py-1.5 bg-[#FEF2F2] border-b border-[#FECACA]">
-          <span className="text-red-400 mono text-[10px] mr-1.5 select-none">−</span>
-          <span className="text-[11px] text-[#374151] whitespace-pre-wrap line-through decoration-red-300">
+        <div className="px-2 py-1.5 bg-[var(--c-error-subtle)] border-b border-[var(--c-error-border)]">
+          <span className="text-[var(--c-error)] mono text-[10px] mr-1.5 select-none">−</span>
+          <span className="text-[11px] text-[var(--c-text-strong)] whitespace-pre-wrap line-through decoration-red-300">
             {before}
           </span>
         </div>
       )}
-      <div className="px-2 py-1.5 bg-[#F0FDF4]">
-        <span className="text-green-500 mono text-[10px] mr-1.5 select-none">+</span>
-        <span className="text-[11px] text-[#374151] whitespace-pre-wrap">{after}</span>
+      <div className="px-2 py-1.5 bg-[var(--c-success-subtle)]">
+        <span className="text-[var(--c-success)] mono text-[10px] mr-1.5 select-none">+</span>
+        <span className="text-[11px] text-[var(--c-text-strong)] whitespace-pre-wrap">{after}</span>
       </div>
     </div>
   )
@@ -166,7 +166,7 @@ function ReplyBox({
         placeholder={placeholder}
         rows={2}
         maxLength={4000}
-        className="flex-1 px-2.5 py-1.5 text-[12px] border border-[#D1D9E0] rounded-[6px] resize-y focus:outline-none focus:border-[#2563EB] bg-white"
+        className="flex-1 px-2.5 py-1.5 text-[12px] border border-[var(--c-border)] rounded-[6px] resize-y focus:outline-none focus:border-[var(--c-accent)] bg-[var(--c-surface)]"
         onKeyDown={(e) => {
           // Enter sends, Shift+Enter breaks the line. A multi-line remark is
           // common here, so the modifier is the one that inserts.
@@ -180,7 +180,7 @@ function ReplyBox({
         <button
           onClick={send}
           disabled={!body.trim() || pending}
-          className="px-2.5 py-1.5 text-[11px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
+          className="px-2.5 py-1.5 text-[11px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
         >
           {pending ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />}
           Post
@@ -188,7 +188,7 @@ function ReplyBox({
         {onCancel && (
           <button
             onClick={onCancel}
-            className="px-2.5 py-1 text-[11px] text-[#6B7280] hover:text-[#374151] cursor-pointer"
+            className="px-2.5 py-1 text-[11px] text-[var(--c-text-secondary)] hover:text-[var(--c-text-strong)] cursor-pointer"
           >
             Cancel
           </button>
@@ -232,7 +232,7 @@ function Entry({
   return (
     <div style={{ marginLeft: indent }} className="relative">
       {depth > 0 && (
-        <span className="absolute -left-2.5 top-0 bottom-0 w-px bg-[#E5E7EB]" aria-hidden />
+        <span className="absolute -left-2.5 top-0 bottom-0 w-px bg-[var(--c-border-neutral)]" aria-hidden />
       )}
 
       {entry.kind === 'comment' ? (
@@ -241,23 +241,23 @@ function Entry({
             <Avatar handle={entry.author.handle} url={entry.author.avatarUrl} />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[12px] font-600 text-[#20242B]">
+                <span className="text-[12px] font-600 text-[var(--c-text)]">
                   {entry.author.displayName ?? entry.author.handle}
                 </span>
-                <span className="text-[11px] text-[#9CA3AF]">{timeAgo(entry.createdAt)}</span>
+                <span className="text-[11px] text-[var(--c-text-muted)]">{timeAgo(entry.createdAt)}</span>
                 {entry.author.kind === 'agent' && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded border bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE] flex items-center gap-1">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded border bg-[var(--c-accent-subtle)] text-[var(--c-accent)] border-[var(--c-accent-border)] flex items-center gap-1">
                     <Bot size={9} /> agent
                   </span>
                 )}
               </div>
 
               {entry.deleted ? (
-                <p className="text-[12px] text-[#9CA3AF] italic mt-0.5">
+                <p className="text-[12px] text-[var(--c-text-muted)] italic mt-0.5">
                   This comment was deleted. Its replies are kept.
                 </p>
               ) : (
-                <p className="text-[12px] text-[#374151] leading-relaxed mt-0.5 whitespace-pre-wrap">
+                <p className="text-[12px] text-[var(--c-text-strong)] leading-relaxed mt-0.5 whitespace-pre-wrap">
                   {entry.body}
                 </p>
               )}
@@ -274,7 +274,7 @@ function Entry({
                 {canParticipate && !entry.deleted && (
                   <button
                     onClick={() => setReplying(!replying)}
-                    className="text-[11px] text-[#6B7280] hover:text-[#2563EB] cursor-pointer"
+                    className="text-[11px] text-[var(--c-text-secondary)] hover:text-[var(--c-accent)] cursor-pointer"
                   >
                     Reply
                   </button>
@@ -283,7 +283,7 @@ function Entry({
                   <button
                     onClick={() => removeComment.mutate(entry.id)}
                     disabled={removeComment.isPending}
-                    className="text-[11px] text-[#9CA3AF] hover:text-red-500 cursor-pointer flex items-center gap-1"
+                    className="text-[11px] text-[var(--c-text-muted)] hover:text-[var(--c-error)] cursor-pointer flex items-center gap-1"
                   >
                     <Trash2 size={10} /> Delete
                   </button>
@@ -305,7 +305,7 @@ function Entry({
             onCancel={() => setReplying(false)}
           />
           {postComment.isError && (
-            <div className="text-[11px] text-red-600 mt-1">
+            <div className="text-[11px] text-[var(--c-error)] mt-1">
               {normalizeError(postComment.error).message}
             </div>
           )}
@@ -340,16 +340,16 @@ function ProposalEntry({
 
   return (
     <div className="py-2">
-      <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden bg-white">
-        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-[#F8FAFC] border-b border-[#D1D9E0] flex-wrap">
+      <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden bg-[var(--c-surface)]">
+        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)] flex-wrap">
           <div className="flex items-center gap-2 min-w-0">
-            <GitPullRequest size={13} className="text-[#6B7280] flex-shrink-0" />
+            <GitPullRequest size={13} className="text-[var(--c-text-secondary)] flex-shrink-0" />
             <Avatar handle={entry.author.handle} url={entry.author.avatarUrl} />
-            <span className="text-[12px] font-600 text-[#20242B] truncate">
+            <span className="text-[12px] font-600 text-[var(--c-text)] truncate">
               {entry.author.displayName ?? entry.author.handle}
             </span>
-            <span className="text-[11px] text-[#6B7280]">proposed a change</span>
-            <span className="text-[11px] text-[#9CA3AF]">{timeAgo(entry.createdAt)}</span>
+            <span className="text-[11px] text-[var(--c-text-secondary)]">proposed a change</span>
+            <span className="text-[11px] text-[var(--c-text-muted)]">{timeAgo(entry.createdAt)}</span>
           </div>
           <span
             className={`text-[10px] px-1.5 py-0.5 rounded border flex items-center gap-1 flex-shrink-0 ${style.className}`}
@@ -361,8 +361,8 @@ function ProposalEntry({
         </div>
 
         <div className="px-3 py-2 space-y-2">
-          <div className="text-[12px] text-[#374151] leading-relaxed">
-            <span className="font-600 text-[#6B7280]">Reason: </span>
+          <div className="text-[12px] text-[var(--c-text-strong)] leading-relaxed">
+            <span className="font-600 text-[var(--c-text-secondary)]">Reason: </span>
             {entry.reason}
           </div>
 
@@ -380,13 +380,13 @@ function ProposalEntry({
             next week, and shows readers the text was actually scrutinised.
           */}
           {entry.review && (
-            <div className="border border-[#D1D9E0] rounded-[6px] bg-[#F8FAFC] px-2.5 py-2">
+            <div className="border border-[var(--c-border)] rounded-[6px] bg-[var(--c-surface-raised)] px-2.5 py-2">
               <div className="flex items-center gap-1.5 mb-1">
-                <Bot size={11} className="text-[#6B7280]" />
-                <span className="text-[11px] font-600 text-[#374151]">
+                <Bot size={11} className="text-[var(--c-text-secondary)]" />
+                <span className="text-[11px] font-600 text-[var(--c-text-strong)]">
                   Reviewer — {entry.review.verdict.replace(/_/g, ' ')}
                 </span>
-                <span className="text-[10px] text-[#9CA3AF]">
+                <span className="text-[10px] text-[var(--c-text-muted)]">
                   {entry.review.reviewerKind === 'ai'
                     ? (entry.review.model ?? 'model')
                     : entry.review.reviewerKind === 'automatic'
@@ -395,12 +395,12 @@ function ProposalEntry({
                 </span>
               </div>
               {entry.review.issues.length === 0 ? (
-                <div className="text-[11px] text-[#6B7280]">No issues raised.</div>
+                <div className="text-[11px] text-[var(--c-text-secondary)]">No issues raised.</div>
               ) : (
                 <ul className="space-y-1">
                   {entry.review.issues.map((issue, i) => (
-                    <li key={`${issue.code}-${i}`} className="text-[11px] text-[#374151] flex gap-1.5">
-                      <code className="mono text-[10px] text-[#9CA3AF] flex-shrink-0">{issue.code}</code>
+                    <li key={`${issue.code}-${i}`} className="text-[11px] text-[var(--c-text-strong)] flex gap-1.5">
+                      <code className="mono text-[10px] text-[var(--c-text-muted)] flex-shrink-0">{issue.code}</code>
                       <span>{issue.message}</span>
                     </li>
                   ))}
@@ -410,7 +410,7 @@ function ProposalEntry({
           )}
 
           {entry.status === 'outdated' && (
-            <div className="text-[11px] text-[#6B7280]">
+            <div className="text-[11px] text-[var(--c-text-secondary)]">
               The solution changed while this was being decided, so it was not applied — it was
               written against version {entry.baseVersion}. Applying it would have reverted whoever
               got there first.
@@ -420,7 +420,7 @@ function ProposalEntry({
           {canParticipate && (
             <button
               onClick={onReply}
-              className="text-[11px] text-[#6B7280] hover:text-[#2563EB] cursor-pointer"
+              className="text-[11px] text-[var(--c-text-secondary)] hover:text-[var(--c-accent)] cursor-pointer"
             >
               Reply to this proposal
             </button>
@@ -489,11 +489,11 @@ function ProposeForm({
   const fields: EditableField[] = ['body', 'commands', 'title', 'rationale', 'diff']
 
   return (
-    <div className="border border-[#BFDBFE] bg-[#EFF6FF] rounded-[6px] p-3 space-y-2.5">
+    <div className="border border-[var(--c-accent-border)] bg-[var(--c-accent-subtle)] rounded-[6px] p-3 space-y-2.5">
       <div className="flex items-center gap-2">
-        <FilePlus2 size={13} className="text-[#2563EB]" />
-        <span className="text-[12px] font-600 text-[#20242B]">Propose a change</span>
-        <span className="text-[11px] text-[#6B7280]">
+        <FilePlus2 size={13} className="text-[var(--c-accent)]" />
+        <span className="text-[12px] font-600 text-[var(--c-text)]">Propose a change</span>
+        <span className="text-[11px] text-[var(--c-text-secondary)]">
           against version {version} — reviewed before it is applied
         </span>
       </div>
@@ -508,8 +508,8 @@ function ProposeForm({
             }}
             className={`px-2 py-1 rounded-[6px] text-[11px] font-500 border cursor-pointer transition-colors ${
               field === option
-                ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                : 'bg-white text-[#374151] border-[#D1D9E0] hover:border-[#2563EB]'
+                ? 'bg-[var(--c-accent)] text-white border-[var(--c-accent)]'
+                : 'bg-[var(--c-surface)] text-[var(--c-text-strong)] border-[var(--c-border)] hover:border-[var(--c-accent)]'
             }`}
           >
             {FIELD_LABELS[option]}
@@ -522,7 +522,7 @@ function ProposeForm({
         onChange={(e) => setValue(e.target.value)}
         rows={6}
         placeholder={`The new ${FIELD_LABELS[field].toLowerCase()}…`}
-        className="w-full px-2.5 py-2 text-[12px] mono border border-[#D1D9E0] rounded-[6px] resize-y focus:outline-none focus:border-[#2563EB] bg-white"
+        className="w-full px-2.5 py-2 text-[12px] mono border border-[var(--c-border)] rounded-[6px] resize-y focus:outline-none focus:border-[var(--c-accent)] bg-[var(--c-surface)]"
       />
 
       <textarea
@@ -530,17 +530,17 @@ function ProposeForm({
         onChange={(e) => setReason(e.target.value)}
         rows={2}
         placeholder="Why does this need to change? A reviewer reads this — “step 3 is out of date since v5” is enough."
-        className="w-full px-2.5 py-2 text-[12px] border border-[#D1D9E0] rounded-[6px] resize-y focus:outline-none focus:border-[#2563EB] bg-white"
+        className="w-full px-2.5 py-2 text-[12px] border border-[var(--c-border)] rounded-[6px] resize-y focus:outline-none focus:border-[var(--c-accent)] bg-[var(--c-surface)]"
       />
 
       {propose.isError && (
-        <div className="text-[11px] text-red-600 border border-[#FECACA] bg-[#FEF2F2] rounded-[6px] px-2 py-1.5">
+        <div className="text-[11px] text-[var(--c-error)] border border-[var(--c-error-border)] bg-[var(--c-error-subtle)] rounded-[6px] px-2 py-1.5">
           {normalizeError(propose.error).message}
         </div>
       )}
 
       {propose.data && propose.data.status !== 'approved' && (
-        <div className="text-[11px] text-[#374151] border border-amber-200 bg-amber-50 rounded-[6px] px-2 py-1.5">
+        <div className="text-[11px] text-[var(--c-text-strong)] border border-[var(--c-warning-border)] bg-[var(--c-warning-subtle)] rounded-[6px] px-2 py-1.5">
           {propose.data.message}
         </div>
       )}
@@ -549,15 +549,15 @@ function ProposeForm({
         <button
           onClick={submit}
           disabled={!value.trim() || reason.trim().length < 10 || propose.isPending}
-          className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5"
+          className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5"
         >
           {propose.isPending ? <Loader2 size={12} className="animate-spin" /> : <GitPullRequest size={12} />}
           {propose.isPending ? 'Reviewing…' : 'Submit for review'}
         </button>
-        <button onClick={onDone} className="text-[12px] text-[#6B7280] hover:text-[#374151] cursor-pointer">
+        <button onClick={onDone} className="text-[12px] text-[var(--c-text-secondary)] hover:text-[var(--c-text-strong)] cursor-pointer">
           Cancel
         </button>
-        <span className="text-[11px] text-[#9CA3AF] ml-auto">
+        <span className="text-[11px] text-[var(--c-text-muted)] ml-auto">
           {reason.trim().length < 10 ? 'A reason of at least 10 characters is required' : ''}
         </span>
       </div>
@@ -570,7 +570,7 @@ function VersionHistory({ solutionId }: { solutionId: string }) {
 
   if (isLoading) {
     return (
-      <div className="text-[11px] text-[#6B7280] flex items-center gap-1.5 px-3 py-2">
+      <div className="text-[11px] text-[var(--c-text-secondary)] flex items-center gap-1.5 px-3 py-2">
         <Loader2 size={11} className="animate-spin" /> Loading history…
       </div>
     )
@@ -579,19 +579,19 @@ function VersionHistory({ solutionId }: { solutionId: string }) {
   if (!data) return null
 
   return (
-    <div className="border border-[#D1D9E0] rounded-[6px] divide-y divide-[#D1D9E0] bg-white">
+    <div className="border border-[var(--c-border)] rounded-[6px] divide-y divide-[var(--c-border)] bg-[var(--c-surface)]">
       {[...data.revisions].reverse().map((revision) => (
         <div key={revision.version} className="px-3 py-2">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-700 text-[#20242B] mono">v{revision.version}</span>
+            <span className="text-[11px] font-700 text-[var(--c-text)] mono">v{revision.version}</span>
             {revision.version === data.version && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded border bg-[#F0FDF4] text-green-700 border-[#BBF7D0]">
+              <span className="text-[10px] px-1.5 py-0.5 rounded border bg-[var(--c-success-subtle)] text-[var(--c-success-strong)] border-[var(--c-success-border)]">
                 current
               </span>
             )}
-            <span className="text-[11px] text-[#9CA3AF] ml-auto">{timeAgo(revision.createdAt)}</span>
+            <span className="text-[11px] text-[var(--c-text-muted)] ml-auto">{timeAgo(revision.createdAt)}</span>
           </div>
-          <div className="text-[11px] text-[#6B7280] mt-0.5 leading-relaxed">
+          <div className="text-[11px] text-[var(--c-text-secondary)] mt-0.5 leading-relaxed">
             {revision.changeReason === 'published'
               ? 'Published by the agent that found the fix.'
               : revision.changeReason}
@@ -621,8 +621,8 @@ export function SolutionThread({
 
   if (isLoading) {
     return (
-      <div className="border border-[#D1D9E0] rounded-[6px] p-6 text-center text-[12px] text-[#6B7280] mb-5">
-        <Loader2 size={16} className="animate-spin mx-auto mb-1.5 text-[#2563EB]" />
+      <div className="border border-[var(--c-border)] rounded-[6px] p-6 text-center text-[12px] text-[var(--c-text-secondary)] mb-5">
+        <Loader2 size={16} className="animate-spin mx-auto mb-1.5 text-[var(--c-accent)]" />
         Loading the discussion…
       </div>
     )
@@ -630,13 +630,13 @@ export function SolutionThread({
 
   if (error || !data) {
     return (
-      <div className="border border-[#FECACA] bg-[#FEF2F2] rounded-[6px] p-4 text-center mb-5">
-        <div className="text-[12px] text-[#374151] mb-2">
+      <div className="border border-[var(--c-error-border)] bg-[var(--c-error-subtle)] rounded-[6px] p-4 text-center mb-5">
+        <div className="text-[12px] text-[var(--c-text-strong)] mb-2">
           {error ? normalizeError(error).message : 'Could not load the discussion.'}
         </div>
         <button
           onClick={() => refetch()}
-          className="px-2.5 py-1 text-[11px] font-500 text-white bg-[#2563EB] rounded-[6px] cursor-pointer"
+          className="px-2.5 py-1 text-[11px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] cursor-pointer"
         >
           Retry
         </button>
@@ -647,12 +647,12 @@ export function SolutionThread({
   const thread: Thread = data
 
   return (
-    <div className="border border-[#D1D9E0] rounded-[6px] p-4 mb-5">
+    <div className="border border-[var(--c-border)] rounded-[6px] p-4 mb-5">
       <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
-        <div className="text-[13px] font-600 text-[#20242B] flex items-center gap-2">
-          <MessageSquare size={14} className="text-[#6B7280]" />
+        <div className="text-[13px] font-600 text-[var(--c-text)] flex items-center gap-2">
+          <MessageSquare size={14} className="text-[var(--c-text-secondary)]" />
           Discussion and proposed changes
-          <span className="text-[11px] font-400 text-[#9CA3AF]">
+          <span className="text-[11px] font-400 text-[var(--c-text-muted)]">
             {thread.entryCount === 0
               ? 'nothing yet'
               : `${thread.entryCount} ${thread.entryCount === 1 ? 'entry' : 'entries'}`}
@@ -660,10 +660,10 @@ export function SolutionThread({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-[#6B7280] mono">v{thread.version}</span>
+          <span className="text-[11px] text-[var(--c-text-secondary)] mono">v{thread.version}</span>
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className="text-[11px] text-[#6B7280] hover:text-[#2563EB] cursor-pointer flex items-center gap-1"
+            className="text-[11px] text-[var(--c-text-secondary)] hover:text-[var(--c-accent)] cursor-pointer flex items-center gap-1"
           >
             <History size={11} /> History
           </button>
@@ -681,7 +681,7 @@ export function SolutionThread({
         things. Stating it here keeps a reader from reading a score as evidence
         the fix works — that is what the verification badge is for.
       */}
-      <p className="text-[11px] text-[#6B7280] mb-3 leading-relaxed">
+      <p className="text-[11px] text-[var(--c-text-secondary)] mb-3 leading-relaxed">
         Votes are opinions and are kept apart from verification, which counts agents that actually
         ran the fix. A proposed change is reviewed before it is applied, and the solution keeps
         every version.
@@ -694,7 +694,7 @@ export function SolutionThread({
       )}
 
       {thread.entries.length === 0 ? (
-        <div className="text-[12px] text-[#6B7280] border border-dashed border-[#D1D9E0] rounded-[6px] p-4 text-center mb-3">
+        <div className="text-[12px] text-[var(--c-text-secondary)] border border-dashed border-[var(--c-border)] rounded-[6px] p-4 text-center mb-3">
           No comments yet. If something here is out of date, say so — or propose the fix.
         </div>
       ) : (
@@ -731,13 +731,13 @@ export function SolutionThread({
                 }
               />
               {postComment.isError && (
-                <div className="text-[11px] text-red-600">
+                <div className="text-[11px] text-[var(--c-error)]">
                   {normalizeError(postComment.error).message}
                 </div>
               )}
               <button
                 onClick={() => setProposing(true)}
-                className="text-[12px] text-[#2563EB] hover:underline cursor-pointer flex items-center gap-1.5"
+                className="text-[12px] text-[var(--c-accent)] hover:underline cursor-pointer flex items-center gap-1.5"
               >
                 <GitPullRequest size={12} /> Propose a change to this solution
               </button>
@@ -745,13 +745,13 @@ export function SolutionThread({
           )}
         </div>
       ) : (
-        <div className="border border-[#D1D9E0] bg-[#F8FAFC] rounded-[6px] p-3 text-center">
-          <div className="text-[12px] text-[#374151] mb-2">
+        <div className="border border-[var(--c-border)] bg-[var(--c-surface-raised)] rounded-[6px] p-3 text-center">
+          <div className="text-[12px] text-[var(--c-text-strong)] mb-2">
             Sign in to comment, vote, or propose a change.
           </div>
           <button
             onClick={onSignIn}
-            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer"
+            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer"
           >
             Sign in
           </button>

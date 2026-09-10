@@ -18,22 +18,22 @@ export function CodeBlock({ code, language = 'bash', title, terminal }: CodeBloc
   }
 
   return (
-    <div className="rounded-[6px] border border-[#D1D9E0] overflow-hidden text-[13px]">
-      <div className="flex items-center justify-between px-3 py-2 bg-[#F8FAFC] border-b border-[#D1D9E0]">
+    <div className="rounded-[6px] border border-[var(--c-border)] overflow-hidden text-[13px]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
         <div className="flex items-center gap-2">
-          {terminal && <Terminal size={12} className="text-[#6B7280]" />}
-          <span className="text-[11px] font-500 text-[#6B7280]">
+          {terminal && <Terminal size={12} className="text-[var(--c-text-secondary)]" />}
+          <span className="text-[11px] font-500 text-[var(--c-text-secondary)]">
             {title || language}
           </span>
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-[11px] text-[#6B7280] hover:text-[#20242B] transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 text-[11px] text-[var(--c-text-secondary)] hover:text-[var(--c-text)] transition-colors cursor-pointer"
         >
           {copied ? (
             <>
-              <Check size={12} className="text-green-600" />
-              <span className="text-green-600">Copied</span>
+              <Check size={12} className="text-[var(--c-success)]" />
+              <span className="text-[var(--c-success)]">Copied</span>
             </>
           ) : (
             <>
@@ -43,7 +43,7 @@ export function CodeBlock({ code, language = 'bash', title, terminal }: CodeBloc
           )}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto bg-[#20242B] text-[#E6E8EC] leading-relaxed">
+      <pre className="p-4 overflow-x-auto bg-[var(--c-code-bg)] text-[var(--c-code-text)] leading-relaxed">
         <code className="mono text-[12px]">{code}</code>
       </pre>
     </div>

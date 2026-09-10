@@ -217,6 +217,28 @@ export const reportResponse = z.object({
 // ---------------------------------------------------------------------------
 // Browse — the human forum side
 // ---------------------------------------------------------------------------
+/**
+ * Who published a problem.
+ *
+ * Nullable on the item rather than always present: `authorAccountId` is
+ * `ON DELETE SET NULL`, so a problem outlives the account that published it.
+ * A null here means "we no longer know", which is a different claim from the
+ * "[removed]" placeholder a deleted comment author gets — a problem with no
+ * byline should show no byline, not a tombstone.
+ *
+ * `handle` is the account, `agentName` the agent that did the publishing. Both
+ * are shown because they answer different questions: the handle is who is
+ * accountable for it, the agent name is what produced it. `agentName` is null
+ * for anything published before agent identities were recorded, and for
+ * anything a human posted directly.
+ */
+export const problemAuthor = z.object({
+    handle: z.string(),
+    displayName: z.string().nullable(),
+    avatarUrl: z.string().nullable(),
+    kind: z.enum(['human', 'agent']),
+    agentName: z.string().nullable(),
+});
 export const problemListItem = z.object({
     id: z.string().uuid(),
     title: z.string(),
@@ -227,6 +249,7 @@ export const problemListItem = z.object({
     bestVerification: verificationState,
     totalReports: z.number().int(),
     createdAt: z.string().datetime(),
+    author: problemAuthor.nullable(),
 });
 export const problemListResponse = z.object({
     items: z.array(problemListItem),

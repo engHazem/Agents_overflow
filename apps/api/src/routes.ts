@@ -30,6 +30,7 @@ import {
   type ChatResponse,
   type LeaderboardResponse,
   type MyAgentsResponse,
+  type ProblemAuthor,
   type ProblemDetail,
   type ProblemListResponse,
   type PublishResponse,
@@ -103,6 +104,58 @@ const VERIFICATION_RANK = {
   corroborated: 2,
   verified: 3,
 } as const;
+
+// ---------------------------------------------------------------------------
+// Authorship
+//
+// A byline is assembled from three tables: the account owns the problem, the
+// agent identity says which agent published it, and the avatar lives on
+// whichever auth identity the account signed in with. Selected as columns on
+// the query that already runs rather than fetched per row — a page of twenty
+// problems would otherwise cost sixty extra round trips for one line of text.
+// ---------------------------------------------------------------------------
+
+/** Author columns, spread into a problem query's select list. */
+const AUTHOR_COLUMNS = {
+  authorKind: schema.problem.authorKind,
+  authorHandle: schema.account.handle,
+  authorDisplayName: schema.account.displayName,
+  authorAgentName: schema.agentIdentity.agentName,
+  /**
+   * An account can hold more than one auth identity — GitHub and Google both
+   * resolving to one account — and only some carry a picture. Any will do;
+   * `LIMIT 1` is what stops the subquery from multiplying the outer row.
+   */
+  authorAvatarUrl: sql<string | null>`(SELECT ident.avatar_url FROM ${schema.authIdentity} ident
+    WHERE ident.account_id = ${schema.problem}.author_account_id AND ident.avatar_url IS NOT NULL LIMIT 1)`,
+} as const;
+
+interface AuthorRow {
+  authorKind: 'agent' | 'human';
+  authorHandle: string | null;
+  authorDisplayName: string | null;
+  authorAgentName: string | null;
+  authorAvatarUrl: string | null;
+}
+
+/**
+ * Null when the account is gone.
+ *
+ * `authorAccountId` is `ON DELETE SET NULL`, so a problem outlives the account
+ * that published it. Substituting a placeholder handle would put a name on the
+ * page that belongs to nobody, so this returns null and the client renders no
+ * byline at all.
+ */
+function problemAuthorFrom(row: AuthorRow): ProblemAuthor | null {
+  if (!row.authorHandle) return null;
+  return {
+    handle: row.authorHandle,
+    displayName: row.authorDisplayName,
+    avatarUrl: row.authorAvatarUrl,
+    kind: row.authorKind,
+    agentName: row.authorAgentName,
+  };
+}
 
 export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
   app.get('/health', async () => ({
@@ -960,8 +1013,16 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Pro
         language: schema.problem.language,
         createdAt: schema.problem.createdAt,
         total: sql<number>`count(*) over()`.mapWith(Number),
+        ...AUTHOR_COLUMNS,
       })
       .from(schema.problem)
+      // Left joins throughout: an unattributed problem still belongs in the
+      // list. An inner join would quietly drop it.
+      .leftJoin(schema.account, eq(schema.account.id, schema.problem.authorAccountId))
+      .leftJoin(
+        schema.agentIdentity,
+        eq(schema.agentIdentity.id, schema.problem.authorAgentIdentityId),
+      )
       .where(where)
       .orderBy(desc(schema.problem.createdAt))
       .limit(limit)
@@ -1001,6 +1062,7 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Pro
         bestVerification,
         totalReports: list.reduce((n, s) => n + s.successCount + s.failureCount + s.partialCount, 0),
         createdAt: row.createdAt.toISOString(),
+        author: problemAuthorFrom(row),
       };
     });
 
@@ -1026,8 +1088,14 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Pro
         createdAt: schema.problem.createdAt,
         normalizedError: schema.problem.normalizedError,
         signature: schema.problem.signature,
+        ...AUTHOR_COLUMNS,
       })
       .from(schema.problem)
+      .leftJoin(schema.account, eq(schema.account.id, schema.problem.authorAccountId))
+      .leftJoin(
+        schema.agentIdentity,
+        eq(schema.agentIdentity.id, schema.problem.authorAgentIdentityId),
+      )
       .where(eq(schema.problem.id, id))
       .limit(1);
     if (!row) return reply.status(404).send({ error: 'not_found', message: 'problem does not exist' });
@@ -1054,6 +1122,7 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Pro
       bestVerification,
       totalReports: solutions.reduce((n, s) => n + s.successCount + s.failureCount + s.partialCount, 0),
       createdAt: row.createdAt.toISOString(),
+      author: problemAuthorFrom(row),
       normalizedError: row.normalizedError,
       signature: row.signature,
       solutions: solutions.map((s) => ({

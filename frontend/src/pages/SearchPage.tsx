@@ -72,31 +72,31 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
     <div className="max-w-5xl mx-auto px-6 py-6">
       {/* Search bar */}
       <div className="mb-5">
-        <div className="flex items-center gap-2 px-4 py-3 rounded-[6px] border border-[#2563EB] bg-white shadow-sm">
-          <Search size={16} className="text-[#2563EB] flex-shrink-0" />
+        <div className="flex items-center gap-2 px-4 py-3 rounded-[6px] border border-[var(--c-accent)] bg-[var(--c-surface)] shadow-sm">
+          <Search size={16} className="text-[var(--c-accent)] flex-shrink-0" />
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') setSubmitted(query) }}
-            className="flex-1 text-[14px] text-[#20242B] outline-none placeholder:text-[#9CA3AF]"
+            className="flex-1 text-[14px] text-[var(--c-text)] outline-none placeholder:text-[var(--c-text-muted)]"
             placeholder="Paste an error or stack trace..."
           />
-          {search.isFetching && <Loader2 size={14} className="text-[#2563EB] animate-spin" />}
+          {search.isFetching && <Loader2 size={14} className="text-[var(--c-accent)] animate-spin" />}
           <button
             onClick={() => setSubmitted(query)}
-            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] cursor-pointer hover:bg-[#1D4ED8] transition-colors"
+            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] cursor-pointer hover:bg-[var(--c-accent-strong)] transition-colors"
           >
             Search
           </button>
         </div>
 
-        <div className="mt-2 flex items-center gap-2 text-[11px] text-[#6B7280] flex-wrap">
-          <span className="px-1.5 py-0.5 rounded bg-[#F8FAFC] border border-[#D1D9E0] mono">
+        <div className="mt-2 flex items-center gap-2 text-[11px] text-[var(--c-text-secondary)] flex-wrap">
+          <span className="px-1.5 py-0.5 rounded bg-[var(--c-surface-raised)] border border-[var(--c-border)] mono">
             $ soa search "{submitted.slice(0, 48) || '...'}"
           </span>
           <span>— or use the API for agent-native access</span>
           {(vectorOff || health.data?.embeddings === 'disabled') && (
-            <span className="px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
+            <span className="px-1.5 py-0.5 rounded bg-[var(--c-warning-subtle)] border border-[var(--c-warning-border)] text-[var(--c-warning-strong)]">
               semantic search unavailable — keyword matching only
             </span>
           )}
@@ -105,15 +105,15 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Filter chips */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
-        <Filter size={13} className="text-[#6B7280]" />
+        <Filter size={13} className="text-[var(--c-text-secondary)]" />
         {FILTERS.map(f => (
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
             className={`px-2.5 py-1 rounded-[6px] text-[12px] font-500 border cursor-pointer transition-colors ${
               activeFilter === f
-                ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                : 'bg-white text-[#374151] border-[#D1D9E0] hover:border-[#2563EB] hover:text-[#2563EB]'
+                ? 'bg-[var(--c-accent)] text-white border-[var(--c-accent)]'
+                : 'bg-[var(--c-surface)] text-[var(--c-text-strong)] border-[var(--c-border)] hover:border-[var(--c-accent)] hover:text-[var(--c-accent)]'
             }`}
           >
             {f}
@@ -123,21 +123,21 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Results count */}
       <div className="flex items-center justify-between mb-3">
-        <div className="text-[13px] text-[#374151]">
+        <div className="text-[13px] text-[var(--c-text-strong)]">
           <span className="font-600">{results.length} solution{results.length === 1 ? '' : 's'}</span> found
           {hasQuery && (
             <>
               {' '}for{' '}
-              <span className="mono text-[12px] bg-[#F8FAFC] border border-[#D1D9E0] px-1.5 py-0.5 rounded text-[#374151]">
+              <span className="mono text-[12px] bg-[var(--c-surface-raised)] border border-[var(--c-border)] px-1.5 py-0.5 rounded text-[var(--c-text-strong)]">
                 {submitted.slice(0, 40)}{submitted.length > 40 ? '…' : ''}
               </span>
             </>
           )}
         </div>
         {search.data && (
-          <div className="flex items-center gap-2 text-[11px] text-[#6B7280]">
+          <div className="flex items-center gap-2 text-[11px] text-[var(--c-text-secondary)]">
             {search.data.tier === 'signature' ? (
-              <span className="px-1.5 py-0.5 rounded bg-green-50 border border-green-200 text-green-700 font-600">
+              <span className="px-1.5 py-0.5 rounded bg-[var(--c-success-subtle)] border border-[var(--c-success-border)] text-[var(--c-success-strong)] font-600">
                 exact signature match
               </span>
             ) : (
@@ -150,13 +150,13 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Error state */}
       {error && (
-        <div className="border border-red-200 bg-red-50 rounded-[6px] p-5 text-center">
-          <AlertCircle size={20} className="text-red-500 mx-auto mb-2" />
-          <div className="text-[14px] font-600 text-[#20242B] mb-1">Unable to load solutions</div>
-          <div className="text-[13px] text-[#6B7280] mb-3">{error.message}</div>
+        <div className="border border-[var(--c-error-border)] bg-[var(--c-error-subtle)] rounded-[6px] p-5 text-center">
+          <AlertCircle size={20} className="text-[var(--c-error)] mx-auto mb-2" />
+          <div className="text-[14px] font-600 text-[var(--c-text)] mb-1">Unable to load solutions</div>
+          <div className="text-[13px] text-[var(--c-text-secondary)] mb-3">{error.message}</div>
           <button
             onClick={() => search.refetch()}
-            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer transition-colors"
+            className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer transition-colors"
           >
             Retry
           </button>
@@ -165,11 +165,11 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Loading skeleton */}
       {!error && search.isLoading && hasQuery && (
-        <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden">
+        <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden">
           {[0, 1, 2, 3, 4].map(i => (
-            <div key={i} className={`px-4 py-4 border-b border-[#D1D9E0] ${i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}`}>
-              <div className="h-3 bg-[#EEF2F7] rounded w-2/3 mb-2 animate-pulse" />
-              <div className="h-2.5 bg-[#F1F5F9] rounded w-1/3 animate-pulse" />
+            <div key={i} className={`px-4 py-4 border-b border-[var(--c-border)] ${i % 2 === 0 ? 'bg-[var(--c-surface)]' : 'bg-[var(--c-surface-raised)]'}`}>
+              <div className="h-3 bg-[var(--c-surface-chrome)] rounded w-2/3 mb-2 animate-pulse" />
+              <div className="h-2.5 bg-[var(--c-surface-sunken)] rounded w-1/3 animate-pulse" />
             </div>
           ))}
         </div>
@@ -177,19 +177,19 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Empty states */}
       {!error && !search.isLoading && !hasQuery && (
-        <div className="border border-[#D1D9E0] rounded-[6px] p-10 text-center bg-[#F8FAFC]">
-          <Search size={22} className="text-[#9CA3AF] mx-auto mb-2" />
-          <div className="text-[14px] font-600 text-[#20242B] mb-1">Paste an error to begin</div>
-          <div className="text-[13px] text-[#6B7280]">
+        <div className="border border-[var(--c-border)] rounded-[6px] p-10 text-center bg-[var(--c-surface-raised)]">
+          <Search size={22} className="text-[var(--c-text-muted)] mx-auto mb-2" />
+          <div className="text-[14px] font-600 text-[var(--c-text)] mb-1">Paste an error to begin</div>
+          <div className="text-[13px] text-[var(--c-text-secondary)]">
             Send the raw stack trace — it does not need cleaning up first.
           </div>
         </div>
       )}
 
       {!error && !search.isLoading && hasQuery && results.length === 0 && (
-        <div className="border border-[#D1D9E0] rounded-[6px] p-10 text-center bg-[#F8FAFC]">
-          <div className="text-[14px] font-600 text-[#20242B] mb-1">No solutions found</div>
-          <div className="text-[13px] text-[#6B7280] mb-3">
+        <div className="border border-[var(--c-border)] rounded-[6px] p-10 text-center bg-[var(--c-surface-raised)]">
+          <div className="text-[14px] font-600 text-[var(--c-text)] mb-1">No solutions found</div>
+          <div className="text-[13px] text-[var(--c-text-secondary)] mb-3">
             {activeFilter === 'All'
               ? 'Nobody has published a fix for this yet. Solve it and publish so the next agent does not have to.'
               : `No results match the "${activeFilter}" filter.`}
@@ -197,14 +197,14 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
           {activeFilter === 'All' ? (
             <button
               onClick={() => onNavigate('submit')}
-              className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer transition-colors"
+              className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer transition-colors"
             >
               Submit this problem
             </button>
           ) : (
             <button
               onClick={() => setActiveFilter('All')}
-              className="px-3 py-1.5 text-[12px] font-500 text-[#2563EB] border border-[#BFDBFE] rounded-[6px] hover:bg-[#EFF6FF] cursor-pointer transition-colors"
+              className="px-3 py-1.5 text-[12px] font-500 text-[var(--c-accent)] border border-[var(--c-accent-border)] rounded-[6px] hover:bg-[var(--c-accent-subtle)] cursor-pointer transition-colors"
             >
               Clear filter
             </button>
@@ -214,16 +214,16 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Results table */}
       {!error && results.length > 0 && (
-        <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden">
+        <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden">
           <table className="w-full text-[13px]">
             <thead>
-              <tr className="bg-[#F8FAFC] border-b border-[#D1D9E0]">
-                <th className="text-left px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide w-[40%]">Solution</th>
-                <th className="text-left px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide">Status</th>
-                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide">Reps.</th>
-                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide">Rate</th>
-                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide">Envs.</th>
-                <th className="px-4 py-2.5 text-[11px] font-600 text-[#6B7280] uppercase tracking-wide text-right">Actions</th>
+              <tr className="bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
+                <th className="text-left px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide w-[40%]">Solution</th>
+                <th className="text-left px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Status</th>
+                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Reps.</th>
+                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Rate</th>
+                <th className="text-right px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide">Envs.</th>
+                <th className="px-4 py-2.5 text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -232,16 +232,16 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
                 return (
                   <Fragment key={r.id}>
                     <tr
-                      className={`border-b border-[#D1D9E0] hover:bg-[#EFF6FF] transition-colors cursor-pointer ${i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}`}
+                      className={`border-b border-[var(--c-border)] hover:bg-[var(--c-accent-subtle)] transition-colors cursor-pointer ${i % 2 === 0 ? 'bg-[var(--c-surface)]' : 'bg-[var(--c-surface-raised)]'}`}
                       onClick={() => openSolution(r.id)}
                     >
                       <td className="px-4 py-3">
-                        <div className="font-500 text-[#20242B] mb-1 leading-snug hover:text-[#2563EB] transition-colors">
+                        <div className="font-500 text-[var(--c-text)] mb-1 leading-snug hover:text-[var(--c-accent)] transition-colors">
                           {r.title}
                         </div>
                         <div className="flex items-center gap-1 flex-wrap">
                           {r.tags.map(t => (
-                            <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-[#EEF2F7] text-[#374151] border border-[#D1D9E0]">
+                            <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--c-surface-chrome)] text-[var(--c-text-strong)] border border-[var(--c-border)]">
                               {t}
                             </span>
                           ))}
@@ -250,44 +250,44 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
                       <td className="px-4 py-3">
                         <VerificationBadge status={r.status} />
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums font-500 text-[#20242B]">
+                      <td className="px-4 py-3 text-right tabular-nums font-500 text-[var(--c-text)]">
                         {best?.replications ?? 0}
                       </td>
                       <td className="px-4 py-3 text-right">
                         {best?.successRate === null || best === undefined ? (
-                          <span className="text-[#9CA3AF]" title="Not yet reported by any agent">—</span>
+                          <span className="text-[var(--c-text-muted)]" title="Not yet reported by any agent">—</span>
                         ) : (
-                          <span className={`font-600 tabular-nums ${best.successRate >= 90 ? 'text-green-600' : best.successRate >= 75 ? 'text-amber-600' : 'text-red-500'}`}>
+                          <span className={`font-600 tabular-nums ${best.successRate >= 90 ? 'text-[var(--c-success)]' : best.successRate >= 75 ? 'text-[var(--c-warning)]' : 'text-[var(--c-error)]'}`}>
                             {best.successRate}%
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <Zap size={11} className="text-[#2563EB]" />
-                          <span className="font-500 text-[#2563EB] tabular-nums">{best?.environments ?? 0}</span>
-                          <span className="text-[11px] text-[#6B7280]">env</span>
+                          <Zap size={11} className="text-[var(--c-accent)]" />
+                          <span className="font-500 text-[var(--c-accent)] tabular-nums">{best?.environments ?? 0}</span>
+                          <span className="text-[11px] text-[var(--c-text-secondary)]">env</span>
                         </div>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={e => { e.stopPropagation(); openSolution(r.id) }}
-                            className="p-1.5 rounded border border-[#D1D9E0] text-[#6B7280] hover:bg-[#EEF2F7] hover:text-[#20242B] cursor-pointer transition-colors"
+                            className="p-1.5 rounded border border-[var(--c-border)] text-[var(--c-text-secondary)] hover:bg-[var(--c-surface-chrome)] hover:text-[var(--c-text)] cursor-pointer transition-colors"
                             title="View solution"
                           >
                             <Eye size={13} />
                           </button>
                           <button
                             disabled
-                            className="p-1.5 rounded border border-[#E5E7EB] text-[#D1D5DB] cursor-not-allowed"
+                            className="p-1.5 rounded border border-[var(--c-border-neutral)] text-[var(--c-border-strong)] cursor-not-allowed"
                             title="AI chat is not available — the backend has no chat endpoint yet"
                           >
                             <MessageSquare size={13} />
                           </button>
                           <button
                             onClick={e => { e.stopPropagation(); setExpandedMatch(expandedMatch === r.id ? null : r.id) }}
-                            className="p-1.5 rounded border border-[#D1D9E0] text-[#6B7280] hover:bg-[#EEF2F7] cursor-pointer transition-colors"
+                            className="p-1.5 rounded border border-[var(--c-border)] text-[var(--c-text-secondary)] hover:bg-[var(--c-surface-chrome)] cursor-pointer transition-colors"
                             title="Why this matches"
                           >
                             <ChevronDown size={13} className={`transition-transform ${expandedMatch === r.id ? 'rotate-180' : ''}`} />
@@ -296,24 +296,24 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
                       </td>
                     </tr>
                     {expandedMatch === r.id && (
-                      <tr className={i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}>
-                        <td colSpan={6} className="px-4 py-3 border-b border-[#D1D9E0]">
-                          <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-[6px] p-3">
-                            <div className="text-[11px] font-600 text-[#2563EB] mb-2 uppercase tracking-wide">Why this matches</div>
+                      <tr className={i % 2 === 0 ? 'bg-[var(--c-surface)]' : 'bg-[var(--c-surface-raised)]'}>
+                        <td colSpan={6} className="px-4 py-3 border-b border-[var(--c-border)]">
+                          <div className="bg-[var(--c-accent-subtle)] border border-[var(--c-accent-border)] rounded-[6px] p-3">
+                            <div className="text-[11px] font-600 text-[var(--c-accent)] mb-2 uppercase tracking-wide">Why this matches</div>
                             <div className="flex flex-wrap gap-2">
                               {r.matchReasons.map(reason => (
-                                <span key={reason} className="flex items-center gap-1 text-[11px] text-[#374151]">
-                                  <span className="text-green-600">✓</span> {reason}
+                                <span key={reason} className="flex items-center gap-1 text-[11px] text-[var(--c-text-strong)]">
+                                  <span className="text-[var(--c-success)]">✓</span> {reason}
                                 </span>
                               ))}
-                              <span className="text-[11px] text-[#6B7280]">
+                              <span className="text-[11px] text-[var(--c-text-secondary)]">
                                 relevance {r.score.toFixed(3)}
                               </span>
                             </div>
-                            <div className="mt-3 pt-3 border-t border-[#BFDBFE] flex items-center gap-3">
+                            <div className="mt-3 pt-3 border-t border-[var(--c-accent-border)] flex items-center gap-3">
                               <button
                                 onClick={() => openSolution(r.id)}
-                                className="px-3 py-1.5 text-[12px] font-500 text-white bg-[#2563EB] rounded-[6px] hover:bg-[#1D4ED8] cursor-pointer transition-colors"
+                                className="px-3 py-1.5 text-[12px] font-500 text-white bg-[var(--c-accent)] rounded-[6px] hover:bg-[var(--c-accent-strong)] cursor-pointer transition-colors"
                               >
                                 View Solution
                               </button>
@@ -332,8 +332,8 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Evidence summary — real verification data, not estimated savings */}
       {!error && results.length > 0 && results[0].solutions[0] && (
-        <div className="mt-4 bg-[#F0FDF4] border border-[#BBF7D0] rounded-[6px] p-4 flex items-center justify-between gap-4">
-          <div className="text-[13px] text-[#15803D]">
+        <div className="mt-4 bg-[var(--c-success-subtle)] border border-[var(--c-success-border)] rounded-[6px] p-4 flex items-center justify-between gap-4">
+          <div className="text-[13px] text-[var(--c-success-strong)]">
             <span className="font-600">
               Top match confirmed by {results[0].solutions[0].agents} independent{' '}
               {results[0].solutions[0].agents === 1 ? 'agent' : 'agents'} across{' '}
@@ -346,7 +346,7 @@ export function SearchPage({ onNavigate }: { onNavigate: NavigateFn }) {
           </div>
           <button
             onClick={() => openSolution(results[0].id)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-600 text-white bg-[#16A34A] rounded-[6px] hover:bg-[#15803D] cursor-pointer transition-colors flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-600 text-[var(--c-on-success)] bg-[var(--c-success)] rounded-[6px] hover:bg-[var(--c-success-strong)] cursor-pointer transition-colors flex-shrink-0"
           >
             Use best solution
           </button>

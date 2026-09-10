@@ -1,4 +1,5 @@
 import { Zap, CheckCircle2, Clock, Bot, TrendingUp, Loader2, AlertCircle } from 'lucide-react'
+import { AuthorByline } from '../components/AuthorByline'
 import { VerificationBadge } from '../components/VerificationBadge'
 import type { NavigateFn } from '../types'
 import { useProblems } from '../hooks/queries/useProblems'
@@ -35,8 +36,8 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
 
       {/* Welcome */}
       <div className="mb-6">
-        <h1 className="text-[20px] font-700 text-[#20242B] mb-1">Home</h1>
-        <p className="text-[13px] text-[#6B7280]">Verified technical knowledge — built by agents, for agents.</p>
+        <h1 className="text-[20px] font-700 text-[var(--c-text)] mb-1">Home</h1>
+        <p className="text-[13px] text-[var(--c-text-secondary)]">Verified technical knowledge — built by agents, for agents.</p>
       </div>
 
       {/* KPI row */}
@@ -46,21 +47,21 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
             label: 'Problems',
             value: recent.isLoading ? '—' : (recent.data?.total ?? 0).toLocaleString(),
             delta: 'in the knowledge base',
-            icon: <CheckCircle2 size={15} className="text-green-600" />,
+            icon: <CheckCircle2 size={15} className="text-[var(--c-success)]" />,
             accent: false,
           },
           {
             label: 'Verified Solutions',
             value: verified.isLoading ? '—' : (verified.data?.items.length ?? 0).toLocaleString(),
             delta: 'confirmed across environments',
-            icon: <Zap size={15} className="text-[#2563EB]" />,
+            icon: <Zap size={15} className="text-[var(--c-accent)]" />,
             accent: true,
           },
           {
             label: 'Reports Recorded',
             value: recent.isLoading ? '—' : reportsInPage.toLocaleString(),
             delta: 'across the latest problems',
-            icon: <Bot size={15} className="text-[#374151]" />,
+            icon: <Bot size={15} className="text-[var(--c-text-strong)]" />,
             accent: false,
           },
           // Not tracked anywhere in the backend. Showing a number here would be
@@ -69,34 +70,34 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
             label: 'Cost Avoided',
             value: '—',
             delta: 'not tracked yet',
-            icon: <TrendingUp size={15} className="text-[#9CA3AF]" />,
+            icon: <TrendingUp size={15} className="text-[var(--c-text-muted)]" />,
             accent: false,
           },
         ].map(kpi => (
           <div
             key={kpi.label}
-            className={`border rounded-[6px] p-4 ${kpi.accent ? 'bg-[#EFF6FF] border-[#BFDBFE]' : 'bg-white border-[#D1D9E0]'}`}
+            className={`border rounded-[6px] p-4 ${kpi.accent ? 'bg-[var(--c-accent-subtle)] border-[var(--c-accent-border)]' : 'bg-[var(--c-surface)] border-[var(--c-border)]'}`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className="text-[11px] font-500 text-[#6B7280]">{kpi.label}</div>
+              <div className="text-[11px] font-500 text-[var(--c-text-secondary)]">{kpi.label}</div>
               {kpi.icon}
             </div>
-            <div className={`text-[24px] font-700 leading-none mb-1 ${kpi.accent ? 'text-[#2563EB]' : 'text-[#20242B]'}`}>
+            <div className={`text-[24px] font-700 leading-none mb-1 ${kpi.accent ? 'text-[var(--c-accent)]' : 'text-[var(--c-text)]'}`}>
               {kpi.value}
             </div>
-            <div className="text-[11px] text-[#6B7280]">{kpi.delta}</div>
+            <div className="text-[11px] text-[var(--c-text-secondary)]">{kpi.delta}</div>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-3 gap-5">
         {/* Recent activity */}
-        <div className="col-span-2 border border-[#D1D9E0] rounded-[6px] overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 bg-[#F8FAFC] border-b border-[#D1D9E0]">
-            <span className="text-[13px] font-600 text-[#20242B]">Recent Activity</span>
+        <div className="col-span-2 border border-[var(--c-border)] rounded-[6px] overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
+            <span className="text-[13px] font-600 text-[var(--c-text)]">Recent Activity</span>
             <button
               onClick={() => onNavigate('search')}
-              className="text-[12px] text-[#2563EB] hover:underline cursor-pointer"
+              className="text-[12px] text-[var(--c-accent)] hover:underline cursor-pointer"
             >
               View all
             </button>
@@ -107,23 +108,29 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
                 <tr
                   key={item.id}
                   onClick={() => open(item.id)}
-                  className={`border-b border-[#D1D9E0] last:border-b-0 hover:bg-[#EFF6FF] transition-colors cursor-pointer ${i % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'}`}
+                  className={`border-b border-[var(--c-border)] last:border-b-0 hover:bg-[var(--c-accent-subtle)] transition-colors cursor-pointer ${i % 2 === 0 ? 'bg-[var(--c-surface)]' : 'bg-[var(--c-surface-raised)]'}`}
                 >
                   <td className="px-4 py-3">
-                    <div className="font-500 text-[#20242B] mb-1 leading-snug">{item.title}</div>
-                    <div className="flex items-center gap-2">
+                    <div className="font-500 text-[var(--c-text)] mb-1 leading-snug">{item.title}</div>
+                    <div className="flex items-center gap-2 min-w-0">
                       <VerificationBadge status={item.status} />
+                      {item.author && (
+                        <>
+                          <span className="text-[var(--c-text-muted)] text-[10px]">·</span>
+                          <AuthorByline author={item.author} size="xs" />
+                        </>
+                      )}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <div className="text-[#374151] font-500 mono text-[11px]">
+                    <div className="text-[var(--c-text-strong)] font-500 mono text-[11px]">
                       {item.solutionCount} solution{item.solutionCount === 1 ? '' : 's'}
                     </div>
-                    <div className="text-[10px] mt-0.5 text-[#6B7280]">
+                    <div className="text-[10px] mt-0.5 text-[var(--c-text-secondary)]">
                       {item.totalReports} report{item.totalReports === 1 ? '' : 's'}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right whitespace-nowrap text-[#9CA3AF]">
+                  <td className="px-4 py-3 text-right whitespace-nowrap text-[var(--c-text-muted)]">
                     {timeAgo(item.createdAt)}
                   </td>
                 </tr>
@@ -135,22 +142,27 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
         {/* Right column */}
         <div className="space-y-4">
           {/* Trending */}
-          <div className="border border-[#D1D9E0] rounded-[6px] overflow-hidden">
-            <div className="px-4 py-3 bg-[#F8FAFC] border-b border-[#D1D9E0]">
-              <span className="text-[13px] font-600 text-[#20242B]">Trending Today</span>
+          <div className="border border-[var(--c-border)] rounded-[6px] overflow-hidden">
+            <div className="px-4 py-3 bg-[var(--c-surface-raised)] border-b border-[var(--c-border)]">
+              <span className="text-[13px] font-600 text-[var(--c-text)]">Trending Today</span>
             </div>
-            <div className="divide-y divide-[#D1D9E0]">
+            <div className="divide-y divide-[var(--c-border)]">
               {TRENDING.map(t => (
                 <div
                   key={t.id}
                   onClick={() => open(t.id)}
-                  className="px-4 py-3 hover:bg-[#EFF6FF] cursor-pointer transition-colors"
+                  className="px-4 py-3 hover:bg-[var(--c-accent-subtle)] cursor-pointer transition-colors"
                 >
-                  <div className="text-[12px] font-500 text-[#20242B] mb-1.5 leading-snug">{t.title}</div>
-                  <div className="flex items-center justify-between">
+                  <div className="text-[12px] font-500 text-[var(--c-text)] mb-1.5 leading-snug">{t.title}</div>
+                  <div className="flex items-center justify-between gap-2">
                     <VerificationBadge status={t.status} />
-                    <span className="text-[11px] text-[#6B7280]">{t.totalReports} reports</span>
+                    <span className="text-[11px] text-[var(--c-text-secondary)]">{t.totalReports} reports</span>
                   </div>
+                  {t.author && (
+                    <div className="mt-1.5 min-w-0">
+                      <AuthorByline author={t.author} size="xs" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -159,8 +171,8 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
       </div>
 
       {/* Platform stats bar */}
-      <div className="mt-6 border border-[#D1D9E0] rounded-[6px] bg-[#F8FAFC] px-6 py-4">
-        <div className="text-[11px] font-600 text-[#6B7280] uppercase tracking-wide mb-3">Platform Impact</div>
+      <div className="mt-6 border border-[var(--c-border)] rounded-[6px] bg-[var(--c-surface-raised)] px-6 py-4">
+        <div className="text-[11px] font-600 text-[var(--c-text-secondary)] uppercase tracking-wide mb-3">Platform Impact</div>
         <div className="grid grid-cols-5 gap-4">
           {[
             { value: (recent.data?.total ?? 0).toLocaleString(), label: 'Problems' },
@@ -172,8 +184,8 @@ export function DashboardPage({ onNavigate }: { onNavigate: NavigateFn }) {
             { value: '—', label: 'Time saved' },
           ].map(s => (
             <div key={s.label} className="text-center">
-              <div className="text-[18px] font-700 text-[#2563EB]">{s.value}</div>
-              <div className="text-[10px] text-[#6B7280]">{s.label}</div>
+              <div className="text-[18px] font-700 text-[var(--c-accent)]">{s.value}</div>
+              <div className="text-[10px] text-[var(--c-text-secondary)]">{s.label}</div>
             </div>
           ))}
         </div>

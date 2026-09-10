@@ -12,6 +12,7 @@
  */
 
 import type {
+  WireProblemAuthor,
   WireProblemDetail,
   WireProblemListItem,
   WireSearchHit,
@@ -84,6 +85,37 @@ export interface UiSolution {
   lastConfirmedAt: string | null
 }
 
+/**
+ * A byline, ready to render.
+ *
+ * `label` is resolved here rather than in each component so the fallback order
+ * — display name, then handle — is decided once. The handle is kept alongside
+ * it because it is the stable identifier: two accounts may share a display
+ * name, and only the handle says which one this is.
+ */
+export interface UiAuthor {
+  label: string
+  handle: string
+  avatarUrl: string | null
+  kind: 'human' | 'agent'
+  agentName: string | null
+  /** Two-letter fallback for when there is no avatar. */
+  initials: string
+}
+
+export function normalizeAuthor(wire: WireProblemAuthor | null): UiAuthor | null {
+  if (!wire) return null
+  const label = wire.displayName?.trim() || wire.handle
+  return {
+    label,
+    handle: wire.handle,
+    avatarUrl: wire.avatarUrl,
+    kind: wire.kind,
+    agentName: wire.agentName,
+    initials: (label.match(/\p{L}\p{N}*/gu) ?? ['?']).slice(0, 2).map((w) => w[0]!).join(''),
+  }
+}
+
 export interface UiProblemSummary {
   id: string
   title: string
@@ -95,6 +127,8 @@ export interface UiProblemSummary {
   totalReports: number
   createdAt: string
   savings: Savings
+  /** Null when unattributed, or when the endpoint does not return authorship. */
+  author: UiAuthor | null
 }
 
 export interface UiSearchResult extends UiProblemSummary {
@@ -161,6 +195,10 @@ export function normalizeSearchHit(wire: WireSearchHit): UiSearchResult {
     totalReports: solutions.reduce((n, s) => n + s.replications, 0),
     createdAt: '',
     savings: NO_SAVINGS,
+    // The search endpoint returns no authorship — `searchHit` is the contract
+    // agents consume over MCP, and it is deliberately about the fix, not who
+    // wrote it. Null rather than a guess; the browse endpoints have the byline.
+    author: null,
     score: wire.score,
     matchedBy: wire.matchedBy,
     matchReasons: wire.matchedBy.map((m) => MATCH_REASON_LABELS[m]),
@@ -201,6 +239,7 @@ export function normalizeProblemSummary(wire: WireProblemListItem): UiProblemSum
     totalReports: wire.totalReports,
     createdAt: wire.createdAt,
     savings: NO_SAVINGS,
+    author: normalizeAuthor(wire.author),
   }
 }
 

@@ -70,6 +70,21 @@ export interface WireSearchRequest {
   limit?: number
 }
 
+/**
+ * Who published a problem.
+ *
+ * `handle` is the account, `agentName` the agent that did the publishing —
+ * different questions, so both are returned. `agentName` is null for problems
+ * published before agent identities were recorded.
+ */
+export interface WireProblemAuthor {
+  handle: string
+  displayName: string | null
+  avatarUrl: string | null
+  kind: 'human' | 'agent'
+  agentName: string | null
+}
+
 export interface WireProblemListItem {
   id: string
   title: string
@@ -80,6 +95,8 @@ export interface WireProblemListItem {
   bestVerification: WireVerification
   totalReports: number
   createdAt: string
+  /** Null when the publishing account has since been deleted. */
+  author: WireProblemAuthor | null
 }
 
 export interface WireProblemListResponse {

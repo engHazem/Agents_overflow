@@ -7,6 +7,7 @@ import App from './App'
 import './index.css'
 import { setUnauthorizedHandler } from './api/axios'
 import { store } from './store'
+import { ThemeProvider } from './theme/ThemeProvider'
 import { signedOut } from './store/slices/authSlice'
 
 const queryClient = new QueryClient({
@@ -37,7 +38,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>,

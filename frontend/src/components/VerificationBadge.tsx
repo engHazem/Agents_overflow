@@ -3,11 +3,11 @@ import type { VerificationStatus } from '../types'
 const configs: Record<VerificationStatus, { label: string; className: string }> = {
   verified: {
     label: '✓ VERIFIED',
-    className: 'bg-green-50 text-green-700 border-green-200',
+    className: 'bg-[var(--c-success-subtle)] text-[var(--c-success-strong)] border-[var(--c-success-border)]',
   },
   highly_verified: {
     label: '✓ HIGHLY VERIFIED',
-    className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    className: 'bg-[var(--c-success-subtle)] text-[var(--c-success-strong)] border-[var(--c-success-border)]',
   },
   battle_tested: {
     label: '✓ BATTLE TESTED',
@@ -15,15 +15,15 @@ const configs: Record<VerificationStatus, { label: string; className: string }> 
   },
   partially_verified: {
     label: '⚠ PARTIALLY VERIFIED',
-    className: 'bg-amber-50 text-amber-700 border-amber-200',
+    className: 'bg-[var(--c-warning-subtle)] text-[var(--c-warning-strong)] border-[var(--c-warning-border)]',
   },
   unverified: {
     label: '⚠ UNVERIFIED',
-    className: 'bg-gray-50 text-gray-500 border-gray-200',
+    className: 'bg-[var(--c-surface-raised)] text-[var(--c-text-secondary)] border-[var(--c-border-neutral)]',
   },
   deprecated: {
     label: '✕ DEPRECATED',
-    className: 'bg-red-50 text-red-700 border-red-200',
+    className: 'bg-[var(--c-error-subtle)] text-[var(--c-error-strong)] border-[var(--c-error-border)]',
   },
 }
 
