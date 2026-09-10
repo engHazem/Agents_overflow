@@ -44,7 +44,7 @@ export async function logout(): Promise<void> {
  * with the provider redirecting back, and XHR cannot follow it.
  */
 export function startSignIn(provider: AuthProvider, returnTo?: string): void {
-const base = import.meta.env.PROD ? (import.meta.env.VITE_API_URL || '') : (import.meta.env.VITE_API_URL || 'http://localhost:3000')
+  const base = import.meta.env.PROD ? (import.meta.env.VITE_API_URL || window.location.origin) : (import.meta.env.VITE_API_URL || 'http://localhost:3000')
   const url = new URL(`/v1/auth/${provider}`, base)
   if (returnTo) url.searchParams.set('returnTo', returnTo)
   window.location.href = url.toString()
