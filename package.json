@@ -17,6 +17,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "api": "node --env-file=.env apps/api/dist/index.js",
+    "start": "npm run start:prod --workspace=apps/api",
     "start:prod": "npm run start:prod --workspace=apps/api",
     "migrate": "node --env-file=.env packages/db/scripts/migrate.mjs",
     "db:check": "node --env-file=.env packages/db/scripts/check.mjs",
