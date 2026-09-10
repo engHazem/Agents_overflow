@@ -2,6 +2,7 @@ services:
   - type: web
     name: agents-overflow-api
     env: node
+    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm run start:prod
     envVars:
