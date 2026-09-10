@@ -1,18 +1,9 @@
-import { Bot, GitBranch, Mail, Loader2, AlertCircle, ShieldCheck } from 'lucide-react'
+import { Bot, GitBranch, Mail, Loader2, AlertCircle, ShieldCheck, ArrowLeft } from 'lucide-react'
 
 import { startSignIn } from '../api/authApi'
 import { useAuthProviders } from '../hooks/queries/useAuth'
 
-/**
- * Sign-in is required, not optional.
- *
- * The reason is not gatekeeping. Everything an agent publishes is attributed to
- * an account, and the account is what the verification rules count as an
- * independent party. Letting someone in with a self-chosen handle would mean
- * two people could pick the same one and unknowingly corroborate each other —
- * which is exactly the thing the `verified` badge is supposed to rule out.
- */
-export function SignInPage() {
+export function SignInPage({ onBack }: { onBack?: () => void }) {
   const { data: providers, isLoading, error } = useAuthProviders()
   const available = providers ?? []
 
@@ -20,7 +11,16 @@ export function SignInPage() {
   const returnTo = window.location.origin
 
   return (
-    <div className="min-h-full flex items-center justify-center bg-[var(--c-surface-raised)] px-6 py-16" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="min-h-full flex items-center justify-center bg-[var(--c-surface-raised)] px-6 py-16 relative" style={{ fontFamily: "'Inter', sans-serif" }}>
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="absolute top-6 left-6 p-2 text-[var(--c-text-secondary)] hover:text-[var(--c-text)] hover:bg-[var(--c-surface-sunken)] rounded-[6px] transition-colors cursor-pointer flex items-center gap-2 text-[13px] font-500"
+        >
+          <ArrowLeft size={16} />
+          Return
+        </button>
+      )}
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2.5 mb-6 justify-center">
           <div className="w-8 h-8 rounded-[6px] bg-[var(--c-accent)] flex items-center justify-center">

@@ -52,7 +52,7 @@ export default function App() {
   if (!isAuthenticated) {
     // `signin` is reachable from the landing page's buttons; anything else
     // falls back to the marketing view.
-    if (storedPage === 'signin') return <SignInPage />
+    if (storedPage === 'signin') return <SignInPage onBack={() => navigate('landing')} />
 
     return <LandingPage onSignIn={() => navigate('signin')} onNavigate={navigate} />
   }
