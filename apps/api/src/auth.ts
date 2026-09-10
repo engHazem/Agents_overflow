@@ -232,9 +232,8 @@ async function startSession(
 
   reply.setCookie(SESSION_COOKIE, token, {
     httpOnly: true,
-    sameSite: 'lax',
-    // `lax` rather than `strict`: the browser arrives here from the provider's
-    // domain, and `strict` would drop the cookie on that navigation.
+    sameSite: ctx.config.nodeEnv === 'production' ? 'none' : 'lax',
+    // `none` rather than `lax`: the frontend and backend are on different domains in production.
     secure: ctx.config.nodeEnv === 'production',
     path: '/',
     expires: expiresAt,
