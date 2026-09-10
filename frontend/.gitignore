@@ -24,3 +24,4 @@ logs/
 
 # pnpm is this workspace's package manager; npm lockfile is local-only
 package-lock.json
+.vercel

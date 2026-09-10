@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: agents-overflow-api
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: API_BASE_URL
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: AUTH_REDIRECT_URL
+        sync: false
+      - key: ALLOWED_ORIGIN
+        sync: false
+      - key: SESSION_SECRET
+        sync: false

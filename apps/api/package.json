@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "node --env-file=../../.env --watch --experimental-strip-types src/index.ts",
     "start": "node --env-file=../../.env dist/index.js",
+    "start:prod": "node dist/index.js",
     "seed": "node --env-file=../../.env dist/seed.js"
   },
   "dependencies": {
