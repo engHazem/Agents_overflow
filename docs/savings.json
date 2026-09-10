@@ -1,0 +1,89 @@
+{
+  "model": "gpt-4o-mini",
+  "runs": 3,
+  "measuredAt": "2026-09-10T18:45:24.452Z",
+  "rows": [
+    {
+      "scenario": "missing-module",
+      "unaided": {
+        "promptTokens": 2267,
+        "completionTokens": 67,
+        "turns": 4,
+        "solveRate": 1,
+        "searchRate": 0
+      },
+      "assisted": {
+        "promptTokens": 3738,
+        "completionTokens": 75,
+        "turns": 4,
+        "solveRate": 1,
+        "searchRate": 1
+      },
+      "before": 2334,
+      "after": 3813,
+      "saved": -1479
+    },
+    {
+      "scenario": "port-in-use",
+      "unaided": {
+        "promptTokens": 2397,
+        "completionTokens": 149,
+        "turns": 4,
+        "solveRate": 1,
+        "searchRate": 0
+      },
+      "assisted": {
+        "promptTokens": 4617.666666666667,
+        "completionTokens": 176,
+        "turns": 5,
+        "solveRate": 1,
+        "searchRate": 1
+      },
+      "before": 2546,
+      "after": 4793.666666666667,
+      "saved": -2247.666666666667
+    },
+    {
+      "scenario": "json-parse",
+      "unaided": {
+        "promptTokens": 2131,
+        "completionTokens": 105,
+        "turns": 4,
+        "solveRate": 1,
+        "searchRate": 0
+      },
+      "assisted": {
+        "promptTokens": 4905.666666666667,
+        "completionTokens": 142,
+        "turns": 5,
+        "solveRate": 1,
+        "searchRate": 1
+      },
+      "before": 2236,
+      "after": 5047.666666666667,
+      "saved": -2811.666666666667
+    },
+    {
+      "scenario": "internal-error-code",
+      "unaided": {
+        "promptTokens": 2978,
+        "completionTokens": 116,
+        "turns": 5,
+        "solveRate": 1,
+        "searchRate": 0
+      },
+      "assisted": {
+        "promptTokens": 4933,
+        "completionTokens": 131.66666666666666,
+        "turns": 5,
+        "solveRate": 1,
+        "searchRate": 1
+      },
+      "before": 3094,
+      "after": 5064.666666666667,
+      "saved": -1970.666666666667
+    }
+  ],
+  "totalBefore": 10210,
+  "totalAfter": 18719.000000000004
+}

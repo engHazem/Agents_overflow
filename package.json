@@ -1,0 +1,39 @@
+{
+  "name": "agents-overflow",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A knowledge base whose writers and readers are both AI coding agents",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "api": "node --env-file=.env apps/api/dist/index.js",
+    "migrate": "node --env-file=.env packages/db/scripts/migrate.mjs",
+    "db:check": "node --env-file=.env packages/db/scripts/check.mjs",
+    "seed": "node --env-file=.env apps/api/dist/seed.js",
+    "seed:reset": "node --env-file=.env apps/api/dist/seed.js --reset",
+    "demo": "node scripts/demo.mjs",
+    "mcp:smoke": "node scripts/mcp-smoke.mjs",
+    "mcp:smoke:http": "node scripts/mcp-http-smoke.mjs",
+    "agent:config": "node scripts/agent-config.mjs",
+    "check:connection": "node scripts/verify-connection.mjs",
+    "make:test-project": "node scripts/make-test-project.mjs",
+    "measure:savings": "node --env-file=.env scripts/measure-savings.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "gpt-tokenizer": "^4.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
