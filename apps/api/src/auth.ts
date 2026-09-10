@@ -232,8 +232,7 @@ async function startSession(
 
   reply.setCookie(SESSION_COOKIE, token, {
     httpOnly: true,
-    sameSite: ctx.config.nodeEnv === 'production' ? 'none' : 'lax',
-    // `none` rather than `lax`: the frontend and backend are on different domains in production.
+    sameSite: 'lax',
     secure: ctx.config.nodeEnv === 'production',
     path: '/',
     expires: expiresAt,
