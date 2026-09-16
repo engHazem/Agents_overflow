@@ -122,11 +122,16 @@ server is a thin wrapper over exactly those endpoints.
 
 ### Deploying it
 
-The generated URL comes from `PUBLIC_BASE_URL` (falling back to
-`API_BASE_URL`). Set it to the address readers will use, not the one the server
-sees itself: behind a proxy those differ, and the internal one produces a
-config that passes every test on the server and fails for every reader. A
-sub-path is preserved, so `https://example.com/api` works.
+The generated URL comes from `MCP_BASE_URL` (falling back to
+`PUBLIC_BASE_URL`, then `API_BASE_URL`). Set it to the address agents will use,
+not the one the server sees itself: behind a proxy those differ, and the
+internal one produces a config that passes every test on the server and fails
+for every reader. A sub-path is preserved, so `https://example.com/api` works.
+
+It is separate from `PUBLIC_BASE_URL` because browsers and agents may take
+different routes. If the frontend proxies `/v1/auth` to keep the session cookie
+first-party, `PUBLIC_BASE_URL` must be the frontend — but the proxy does not
+carry `/mcp`, so point `MCP_BASE_URL` straight at the API.
 
 ### `owner` matters more than it looks
 

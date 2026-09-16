@@ -18,6 +18,8 @@ services:
         sync: false
       - key: PUBLIC_BASE_URL
         sync: false
+      - key: MCP_BASE_URL
+        sync: false
       - key: AUTH_REDIRECT_URL
         sync: false
       - key: ALLOWED_ORIGIN

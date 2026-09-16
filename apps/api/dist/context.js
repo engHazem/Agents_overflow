@@ -20,17 +20,18 @@ export function loadConfig() {
     if (!databaseUrl) {
         throw new Error('DATABASE_URL is not set. Copy .env.example to .env and fill it in.');
     }
+    const apiBaseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT ?? 3000}`;
+    // Defaults to the internal address so a single-host deployment needs no
+    // extra configuration; set it explicitly the moment a proxy is involved.
+    const publicBaseUrl = process.env.PUBLIC_BASE_URL || apiBaseUrl;
     return {
         databaseUrl,
         openaiApiKey: process.env.OPENAI_API_KEY || undefined,
         openaiBaseUrl: process.env.OPENAI_BASE_URL || undefined,
         chatModel: process.env.CHAT_MODEL || undefined,
-        apiBaseUrl: process.env.API_BASE_URL || `http://localhost:${process.env.PORT ?? 3000}`,
-        // Defaults to the internal address so a single-host deployment needs no
-        // extra configuration; set it explicitly the moment a proxy is involved.
-        publicBaseUrl: process.env.PUBLIC_BASE_URL ||
-            process.env.API_BASE_URL ||
-            `http://localhost:${process.env.PORT ?? 3000}`,
+        apiBaseUrl,
+        publicBaseUrl,
+        mcpBaseUrl: process.env.MCP_BASE_URL || publicBaseUrl,
         authRedirectUrl: process.env.AUTH_REDIRECT_URL || 'http://localhost:5173',
         // Falls back to a random value so the server still starts; sessions then
         // simply do not survive a restart, which is the right failure for dev.

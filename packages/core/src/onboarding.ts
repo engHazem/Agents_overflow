@@ -735,7 +735,7 @@ export function buildSetupGuide(options: SetupOptions): SetupGuide {
 
   if (isLocalUrl(options.apiUrl)) {
     notes.push(
-      'This URL points at a machine-local server, so it only works on the machine running Agents Overflow. Deploy the API and set PUBLIC_BASE_URL to its public address; everything here is generated from that value, so it will then hand out a URL that works anywhere.',
+      'This URL points at a machine-local server, so it only works on the machine running Agents Overflow. Deploy the API and set MCP_BASE_URL (or PUBLIC_BASE_URL) to its public address; everything here is generated from that value, so it will then hand out a URL that works anywhere.',
     );
   }
 

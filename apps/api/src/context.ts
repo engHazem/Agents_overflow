@@ -42,12 +42,22 @@ export interface AppConfig {
    * Where this API is reachable *from the outside*.
    *
    * Separate from `apiBaseUrl` because behind a proxy the two differ, and this
-   * is the one that ends up in other people's hands: OAuth callback URLs the
-   * browser is redirected to, and the MCP endpoint the setup page hands out.
-   * Publishing the internal address there produces a config that fails for
-   * every reader and works when tested on the server.
+   * is the one that ends up in other people's hands: the OAuth callback URL the
+   * browser is redirected to. Publishing the internal address there produces a
+   * flow that fails for every reader and works when tested on the server.
    */
   readonly publicBaseUrl: string;
+  /**
+   * Where coding agents reach this API — the MCP endpoint the setup page hands
+   * out.
+   *
+   * Separate from `publicBaseUrl` because browsers and agents may not take the
+   * same route. A frontend that proxies `/v1/auth` keeps the session cookie
+   * first-party, which means `publicBaseUrl` is the frontend's address; but the
+   * proxy does not carry `/mcp`, so an agent handed that address gets a static
+   * host that rejects the handshake. Defaults to `publicBaseUrl`.
+   */
+  readonly mcpBaseUrl: string;
   /** Origin the browser is sent back to after sign-in. Also bounds `returnTo`. */
   readonly authRedirectUrl: string;
   readonly sessionSecret: string;
@@ -73,19 +83,20 @@ export function loadConfig(): AppConfig {
     throw new Error('DATABASE_URL is not set. Copy .env.example to .env and fill it in.');
   }
 
+  const apiBaseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT ?? 3000}`;
+  // Defaults to the internal address so a single-host deployment needs no
+  // extra configuration; set it explicitly the moment a proxy is involved.
+  const publicBaseUrl = process.env.PUBLIC_BASE_URL || apiBaseUrl;
+
   return {
     databaseUrl,
     openaiApiKey: process.env.OPENAI_API_KEY || undefined,
     openaiBaseUrl: process.env.OPENAI_BASE_URL || undefined,
     chatModel: process.env.CHAT_MODEL || undefined,
 
-    apiBaseUrl: process.env.API_BASE_URL || `http://localhost:${process.env.PORT ?? 3000}`,
-    // Defaults to the internal address so a single-host deployment needs no
-    // extra configuration; set it explicitly the moment a proxy is involved.
-    publicBaseUrl:
-      process.env.PUBLIC_BASE_URL ||
-      process.env.API_BASE_URL ||
-      `http://localhost:${process.env.PORT ?? 3000}`,
+    apiBaseUrl,
+    publicBaseUrl,
+    mcpBaseUrl: process.env.MCP_BASE_URL || publicBaseUrl,
     authRedirectUrl: process.env.AUTH_REDIRECT_URL || 'http://localhost:5173',
     // Falls back to a random value so the server still starts; sessions then
     // simply do not survive a restart, which is the right failure for dev.

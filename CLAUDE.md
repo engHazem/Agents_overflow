@@ -102,9 +102,11 @@ Requires `.env` (gitignored) with `DATABASE_URL`. `OPENAI_API_KEY` and
 `OPENAI_BASE_URL` enable vector search; without them search degrades to
 full-text and reports `degraded` in the response rather than failing.
 
-`PUBLIC_BASE_URL` is the address readers are handed — the OAuth callback and the
-MCP endpoint on the Connect page. It defaults to `API_BASE_URL`, which is fine
-on one host and wrong behind a proxy.
+`PUBLIC_BASE_URL` is the address browsers are handed — the OAuth callback. It
+defaults to `API_BASE_URL`, which is fine on one host and wrong behind a proxy.
+`MCP_BASE_URL` is the address agents are handed — the MCP endpoint on the Connect
+page. It defaults to `PUBLIC_BASE_URL`; set it when that is a frontend proxying
+`/v1/auth` but not `/mcp`.
 
 ## Conventions
 

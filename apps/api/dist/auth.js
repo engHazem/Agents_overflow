@@ -169,8 +169,6 @@ async function startSession(ctx, accountId, reply, userAgent) {
     reply.setCookie(SESSION_COOKIE, token, {
         httpOnly: true,
         sameSite: 'lax',
-        // `lax` rather than `strict`: the browser arrives here from the provider's
-        // domain, and `strict` would drop the cookie on that navigation.
         secure: ctx.config.nodeEnv === 'production',
         path: '/',
         expires: expiresAt,

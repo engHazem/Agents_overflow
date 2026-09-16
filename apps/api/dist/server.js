@@ -21,7 +21,8 @@ export async function buildServer() {
      *
      * Still too open for production: lock `origin` to known hosts before deploy.
      */
-    await app.register(cors, { origin: true, credentials: true });
+    const allowedOrigin = process.env.ALLOWED_ORIGIN || true;
+    await app.register(cors, { origin: allowedOrigin, credentials: true });
     await app.register(cookie, { secret: config.sessionSecret });
     await registerAuthRoutes(app, ctx);
     await registerMcpHttp(app, ctx);

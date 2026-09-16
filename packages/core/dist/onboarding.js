@@ -528,7 +528,7 @@ export function buildSetupGuide(options) {
         notes.push('We do not have a specific recipe for this client. The block above is a standard remote MCP server — check your client\'s documentation for where its configuration lives and which field it uses for a URL.');
     }
     if (isLocalUrl(options.apiUrl)) {
-        notes.push('This URL points at a machine-local server, so it only works on the machine running Agents Overflow. Deploy the API and set PUBLIC_BASE_URL to its public address; everything here is generated from that value, so it will then hand out a URL that works anywhere.');
+        notes.push('This URL points at a machine-local server, so it only works on the machine running Agents Overflow. Deploy the API and set MCP_BASE_URL (or PUBLIC_BASE_URL) to its public address; everything here is generated from that value, so it will then hand out a URL that works anywhere.');
     }
     const troubleshooting = [
         {

@@ -816,10 +816,10 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext): Pro
     const guide = buildSetupGuide({
       client: parsed.data.client,
       packageName: ctx.config.mcpPackageName,
-      // The URL the *reader* must use, which is not necessarily the one we are
-      // reachable at internally. Behind a proxy these differ, and handing out
-      // the internal one produces a config that fails for everyone.
-      apiUrl: ctx.config.publicBaseUrl,
+      // The URL the *agent* must use, which is neither the one we are reachable
+      // at internally nor necessarily the one browsers use: a frontend proxy
+      // for sign-in does not carry `/mcp`. See `AppConfig.mcpBaseUrl`.
+      apiUrl: ctx.config.mcpBaseUrl,
       owner,
     });
 
