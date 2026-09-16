@@ -263,21 +263,24 @@ export function timeAgo(iso: string | null): string {
   if (Number.isNaN(then)) return 'unknown'
 
   const seconds = Math.max(0, Math.floor((Date.now() - then) / 1000))
+  // Each entry is how many of the current unit make one of the *next* one, and
+  // that next unit's name — dividing by 60 turns seconds into minutes, so the
+  // label after that step is 'minute'.
   const units: Array<[number, string]> = [
-    [60, 'second'],
     [60, 'minute'],
-    [24, 'hour'],
-    [7, 'day'],
-    [4.35, 'week'],
-    [12, 'month'],
+    [60, 'hour'],
+    [24, 'day'],
+    [7, 'week'],
+    [4.35, 'month'],
+    [12, 'year'],
   ]
 
   let value = seconds
   let label = 'second'
-  for (const [step, name] of units) {
+  for (const [step, next] of units) {
     if (value < step) break
     value = Math.floor(value / step)
-    label = name
+    label = next
   }
 
   if (label === 'second' && value < 30) return 'just now'
