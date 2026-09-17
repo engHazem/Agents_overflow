@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/v1/:path*", "destination": "https://agents-overflow-api.onrender.com/v1/:path*" },
+    { "source": "/health", "destination": "https://agents-overflow-api.onrender.com/health" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
